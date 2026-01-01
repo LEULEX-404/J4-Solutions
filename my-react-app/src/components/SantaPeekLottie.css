@@ -1,0 +1,30 @@
+/* Santa peeking from LEFT side */
+.santa-lottie-peek {
+  position: fixed;
+  left: -50px;          /* half hidden */
+  top: 12%;
+  width: 260px;
+  z-index: 1000;
+  pointer-events: none;
+
+  animation: santaPeek 4s ease-in-out infinite;
+}
+
+/* Peek animation */
+@keyframes santaPeek {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(90px); /* peek inside screen */
+  }
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .santa-lottie-peek {
+    width: 180px;
+    left: -90px;
+    top: 40%;
+  }
+}

@@ -1,9 +1,53 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowRight, Code, Smartphone, Globe, Zap, Shield, TrendingUp } from 'lucide-react';
+import SantaPeekLottie from "../components/SantaPeekLottie.jsx";
 import './HomePage.css';
+
+// Snowflake component
+const Snowflake = ({ style }) => (
+  <div className="snowflake" style={style}>❄</div>
+);
+
+// 3D Santa component
+const Santa3D = () => (
+  <div className="santa-3d-container">
+    <div className="santa-3d">
+      <div className="santa-head">
+        <div className="santa-hat">
+          <div className="hat-main"></div>
+          <div className="hat-pom"></div>
+          <div className="hat-trim"></div>
+        </div>
+        <div className="santa-face">
+          <div className="eye eye-left"></div>
+          <div className="eye eye-right"></div>
+          <div className="nose"></div>
+          <div className="beard">
+            <div className="beard-left"></div>
+            <div className="beard-right"></div>
+            <div className="beard-bottom"></div>
+          </div>
+          <div className="mustache">
+            <div className="mustache-left"></div>
+            <div className="mustache-right"></div>
+          </div>
+        </div>
+      </div>
+      <div className="santa-body">
+        <div className="body-main"></div>
+        <div className="belt">
+          <div className="belt-buckle"></div>
+        </div>
+        <div className="arm arm-left"></div>
+        <div className="arm arm-right"></div>
+      </div>
+    </div>
+  </div>
+);
 
 const HomePage = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [snowflakes, setSnowflakes] = useState([]);
 
   const heroSlides = [
     {
@@ -36,10 +80,48 @@ const HomePage = () => {
     return () => clearInterval(interval);
   }, []);
 
+  // Generate snowflakes - reduced to 25
+  useEffect(() => {
+    const createSnowflakes = () => {
+      const flakes = [];
+      for (let i = 0; i < 25; i++) {
+        flakes.push({
+          id: i,
+          left: Math.random() * 100,
+          animationDuration: Math.random() * 3 + 2,
+          animationDelay: Math.random() * 5,
+          fontSize: Math.random() * 10 + 10,
+          opacity: Math.random() * 0.6 + 0.4
+        });
+      }
+      setSnowflakes(flakes);
+    };
+    createSnowflakes();
+  }, []);
+
   const CurrentIcon = heroSlides[currentSlide].icon;
 
   return (
     <div className="home-page">
+
+      {/* 🎅 Santa */}
+      <SantaPeekLottie />
+      {/* Snowfall Effect */}
+      <div className="snow-container">
+        {snowflakes.map((flake) => (
+          <Snowflake
+            key={flake.id}
+            style={{
+              left: `${flake.left}%`,
+              animationDuration: `${flake.animationDuration}s`,
+              animationDelay: `${flake.animationDelay}s`,
+              fontSize: `${flake.fontSize}px`,
+              opacity: flake.opacity
+            }}
+          />
+        ))}
+      </div>
+
       {/* Hero Section */}
       <section className="hero-section">
         <div className="hero-content">
@@ -81,6 +163,9 @@ const HomePage = () => {
 
       {/* Features Section */}
       <section className="features-section">
+        {/* 3D Santa positioned above title */}
+        <Santa3D />
+        
         <h2 className="section-title">Why Choose J4 Solutions?</h2>
         <div className="features-grid">
           {features.map((feature, index) => {
@@ -89,7 +174,6 @@ const HomePage = () => {
               <div 
                 key={index} 
                 className="feature-card"
-                style={{ '--card-index': index }}
               >
                 <div className="feature-icon-wrapper">
                   <FeatureIcon className="feature-icon" size={32} />
