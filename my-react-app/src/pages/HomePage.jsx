@@ -4,8 +4,9 @@ import { motion, useInView, animate } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, Globe, Zap, Shield, TrendingUp, Users } from 'lucide-react';
 import './HomePage.css';
-import heroEcosystemImg from '../assets/Floating blue software ecosystem.png';
 import teamworkImg from '../assets/Holographic Teamwork Around a Glowing Table.png';
+
+const introVideoUrl = new URL('../assets/Intro video.mp4', import.meta.url).href;
 import webBlueprintImg from '../assets/Floating web development blueprint.png';
 import transformationImg from '../assets/Glowing digital transformation ecosystem.png';
 import aiNetworkImg from '../assets/Transparent AI Neural Network Illustration.png';
@@ -118,6 +119,17 @@ const HomePage = () => {
         <div className="hero-glow hero-glow-violet" aria-hidden="true" />
         <div className="hero-grain" aria-hidden="true" />
 
+        <div className="hero-video-stage" aria-hidden="true">
+          <video
+            className="hero-video"
+            src={introVideoUrl}
+            autoPlay
+            muted
+            loop
+            playsInline
+          />
+        </div>
+
         <div className="hero-shell">
           <motion.div
             className="hero-copy"
@@ -157,17 +169,7 @@ const HomePage = () => {
             animate={{ opacity: 1, x: 0, scale: 1 }}
             transition={{ duration: 1.05, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
           >
-            <div className="hero-frame-label"><span>J4</span> / Scene 01</div>
-            <div className="hero-image-wrap">
-              <img src={heroEcosystemImg} alt="Floating software ecosystem for J4 Solutions digital products" className="hero-image" />
-              <div className="hero-image-wash" aria-hidden="true" />
-            </div>
-            <div className="hero-visual-caption">
-              <span>One team.</span>
-              <strong>From first sketch<br />to final release.</strong>
-            </div>
-            <span className="hero-corner hero-corner-top" aria-hidden="true" />
-            <span className="hero-corner hero-corner-bottom" aria-hidden="true" />
+            <div className="hero-visual-empty" aria-hidden="true" />
           </motion.div>
         </div>
 
