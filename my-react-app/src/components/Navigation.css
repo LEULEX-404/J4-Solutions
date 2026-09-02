@@ -74,75 +74,48 @@
   min-width: 0;
   display: flex;
   align-items: center;
-  gap: 0.8rem;
-  padding: 0.65rem 1.25rem;
+  gap: 0.7rem;
+  padding: 0.35rem 1rem;
   color: inherit;
   text-decoration: none;
 }
 
 .brand-mark {
-  width: 39px;
-  height: 39px;
-  flex: 0 0 39px;
+  width: 76px;
+  height: 40px;
+  flex: 0 0 76px;
   display: grid;
   place-items: center;
   position: relative;
 }
 
-.brand-mark::before,
-.brand-mark::after {
-  content: '';
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  transition: width 0.25s ease, height 0.25s ease;
-}
-
-.brand-mark::before {
-  top: 0;
-  left: 0;
-  border-top: 1px solid var(--primary-color);
-  border-left: 1px solid var(--primary-color);
-}
-
-.brand-mark::after {
-  right: 0;
-  bottom: 0;
-  border-right: 1px solid var(--secondary-color);
-  border-bottom: 1px solid var(--secondary-color);
-}
-
-.nav-identity:hover .brand-mark::before,
-.nav-identity:hover .brand-mark::after {
+.brand-mark img {
   width: 100%;
   height: 100%;
-}
-
-.brand-mark img {
-  width: 29px;
-  height: 29px;
   object-fit: contain;
+  display: block;
+  image-rendering: auto;
 }
 
 .brand-lockup {
   min-width: 0;
   display: grid;
-  grid-template-columns: auto 1fr;
-  align-items: center;
-  gap: 0.7rem;
+  grid-template-columns: 1fr;
+  align-items: start;
+  gap: 0.24rem;
 }
 
 .brand-lockup strong {
   font-family: 'Space Grotesk', 'Inter', sans-serif;
-  font-size: 1.36rem;
+  font-size: 1.05rem;
   font-weight: 700;
   line-height: 1;
 }
 
 .brand-lockup span {
-  max-width: 76px;
+  max-width: none;
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.56rem;
+  font-size: 0.5rem;
   line-height: 1.35;
   text-transform: uppercase;
   color: var(--text-muted);
@@ -362,9 +335,9 @@
   }
 
   .brand-mark {
-    width: 36px;
-    height: 36px;
-    flex-basis: 36px;
+    width: 64px;
+    height: 34px;
+    flex-basis: 64px;
   }
 
   .brand-lockup {
@@ -532,9 +505,7 @@
   .nav-frame,
   .navigation,
   .nav-menu,
-  .nav-item::after,
-  .brand-mark::before,
-  .brand-mark::after {
+  .nav-item::after {
     transition: none;
   }
 }

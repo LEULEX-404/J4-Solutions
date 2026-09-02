@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import { ArrowUpRight, Briefcase, FolderOpen, Home, Mail, Menu, Moon, Sun, Users, X } from 'lucide-react';
-import logo from '../assets/logo1.png';
+import logo from '../assets/logo.png';
 import './Navigation.css';
 
 const navItems = [
@@ -36,11 +36,11 @@ const Navigation = ({ isDarkMode, toggleTheme }) => {
         <div className="nav-frame">
           <Link to="/" className="nav-identity" onClick={closeMobileMenu} aria-label="J4 Solutions home">
             <span className="brand-mark">
-              <img src={logo} alt="" />
+              <img src={logo} alt="J4 Solutions" />
             </span>
             <span className="brand-lockup">
-              <strong>J4</strong>
-              <span>Solutions / Colombo</span>
+              <strong>J4 Solutions</strong>
+              <span>Digital studio / Colombo</span>
             </span>
           </Link>
 

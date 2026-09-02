@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, Globe, Zap, Shield, TrendingUp, Users } from 'lucide-react';
 import './HomePage.css';
 import teamworkImg from '../assets/Holographic Teamwork Around a Glowing Table.png';
+import heroPosterLogo from '../assets/logo.png';
 
 const introVideoUrl = new URL('../assets/Intro video.mp4', import.meta.url).href;
 import webBlueprintImg from '../assets/Floating web development blueprint.png';
@@ -48,6 +49,9 @@ const StatNumber = ({ value, suffix = '', duration = 1.6 }) => {
 };
 
 const HomePage = () => {
+  const [isHeroVideoReady, setIsHeroVideoReady] = useState(false);
+  const [hasHeroVideoError, setHasHeroVideoError] = useState(false);
+
   const studioMoments = [
     {
       kicker: '01 / Intent',
@@ -119,15 +123,30 @@ const HomePage = () => {
         <div className="hero-glow hero-glow-violet" aria-hidden="true" />
         <div className="hero-grain" aria-hidden="true" />
 
-        <div className="hero-video-stage" aria-hidden="true">
+        <div
+          className={`hero-video-stage ${isHeroVideoReady ? 'is-ready' : ''} ${hasHeroVideoError ? 'has-error' : ''}`}
+          aria-hidden="true"
+        >
+          <div className="hero-video-poster">
+            <div className="hero-poster-orbit" />
+            <img src={heroPosterLogo} alt="" />
+          </div>
           <video
             className="hero-video"
             src={introVideoUrl}
+            poster={heroPosterLogo}
             autoPlay
             muted
             loop
             playsInline
+            preload="auto"
+            onLoadedData={() => setIsHeroVideoReady(true)}
+            onError={() => setHasHeroVideoError(true)}
           />
+          <div className="hero-video-loader">
+            <span>Preparing the experience</span>
+            <i><b /></i>
+          </div>
         </div>
 
         <div className="hero-shell">
