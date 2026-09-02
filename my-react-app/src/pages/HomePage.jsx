@@ -4,10 +4,11 @@ import { motion, useInView, animate } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, Globe, Zap, Shield, TrendingUp, Users } from 'lucide-react';
 import './HomePage.css';
-import teamCollaborationImg from '../assets/attractive_team.png';
-import professionalMeetingImg from '../assets/stunning_meeting.png';
-import globalReachImg from '../assets/team_collaboration.png';
-import visionaryStrategyImg from '../assets/professional_meeting.png';
+import heroEcosystemImg from '../assets/Floating blue software ecosystem.png';
+import teamworkImg from '../assets/Holographic Teamwork Around a Glowing Table.png';
+import webBlueprintImg from '../assets/Floating web development blueprint.png';
+import transformationImg from '../assets/Glowing digital transformation ecosystem.png';
+import aiNetworkImg from '../assets/Transparent AI Neural Network Illustration.png';
 
 const fadeIn = {
   hidden: { opacity: 0, y: 30 },
@@ -46,6 +47,57 @@ const StatNumber = ({ value, suffix = '', duration = 1.6 }) => {
 };
 
 const HomePage = () => {
+  const studioMoments = [
+    {
+      kicker: '01 / Intent',
+      title: 'Start with the real business problem.',
+      description: 'Before design or code, we map the goal, users, constraints, and the fastest path to a useful first release.',
+      image: webBlueprintImg,
+      imageAlt: 'Floating web development blueprint',
+      tone: 'cyan',
+      points: [
+        { icon: Users, text: 'Stakeholder alignment' },
+        { icon: Shield, text: 'Risk mapped early' }
+      ]
+    },
+    {
+      kicker: '02 / Craft',
+      title: 'Design and engineering move together.',
+      description: 'Interfaces, data models, and integrations are shaped in one loop, so the product feels polished without slowing delivery.',
+      image: teamworkImg,
+      imageAlt: 'Holographic teamwork around a glowing planning table',
+      tone: 'violet',
+      points: [
+        { icon: Zap, text: 'Rapid working prototypes' },
+        { icon: TrendingUp, text: 'Measured iteration' }
+      ]
+    },
+    {
+      kicker: '03 / Scale',
+      title: 'Launch clean, then grow with control.',
+      description: 'We keep the system practical after launch with maintainable architecture, thoughtful automation, and room for expansion.',
+      image: transformationImg,
+      imageAlt: 'Glowing digital transformation ecosystem',
+      tone: 'green',
+      points: [
+        { icon: Globe, text: 'Cloud-ready delivery' },
+        { icon: Shield, text: 'Security by default' }
+      ]
+    },
+    {
+      kicker: '04 / Intelligence',
+      title: 'Use AI where it earns its place.',
+      description: 'We add automation and intelligence only when it improves the workflow, protects time, or reveals decisions faster.',
+      image: aiNetworkImg,
+      imageAlt: 'Transparent artificial intelligence neural network',
+      tone: 'amber',
+      points: [
+        { icon: Zap, text: 'Useful automation' },
+        { icon: TrendingUp, text: 'Decision support' }
+      ]
+    }
+  ];
+
   const features = [
     { icon: Zap, title: "Lightning Fast", desc: "Optimized architecture and performance for absolute speed." },
     { icon: Shield, title: "Secure & Reliable", desc: "Enterprise-grade security standards to protect your assets." },
@@ -107,7 +159,7 @@ const HomePage = () => {
           >
             <div className="hero-frame-label"><span>J4</span> / Scene 01</div>
             <div className="hero-image-wrap">
-              <img src={teamCollaborationImg} alt="J4 Solutions team collaborating on a digital product" className="hero-image" />
+              <img src={heroEcosystemImg} alt="Floating software ecosystem for J4 Solutions digital products" className="hero-image" />
               <div className="hero-image-wash" aria-hidden="true" />
             </div>
             <div className="hero-visual-caption">
@@ -136,115 +188,61 @@ const HomePage = () => {
       {/* About / Culture Section */}
       <section className="culture-section">
         <motion.div
-          className="culture-container glass-panel"
+          className="culture-intro"
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={{ once: true, amount: 0.35 }}
           variants={fadeIn}
         >
-          <div className="culture-text">
-            <span className="eyebrow"><span className="eyebrow-dot" />Collaboration</span>
-            <h2 className="section-title text-gradient">Driving Innovation Through Collaboration</h2>
-            <p className="culture-desc">
-              At J4-Solutions, we believe that the best products are built by diverse, collaborative teams.
-              Our engineers and designers work hand-in-hand to craft digital experiences that not only meet
-              technical requirements but exceed user expectations.
-            </p>
-            <ul className="culture-bullets">
-              <li><Users size={18} /> Cross-functional expertise</li>
-              <li><TrendingUp size={18} /> Agile and iterative delivery</li>
-              <li><Shield size={18} /> Commitment to quality and trust</li>
-            </ul>
-          </div>
-          <motion.div
-            className="culture-image-wrapper"
-            whileHover={{ scale: 1.02 }}
-            transition={{ duration: 0.3 }}
-          >
-            <img src={teamCollaborationImg} alt="Team Collaboration" className="culture-image" />
-          </motion.div>
+          <span className="eyebrow"><span className="eyebrow-dot" />Studio Method</span>
+          <h2 className="section-title">A calmer way to build ambitious software.</h2>
+          <p className="culture-desc">
+            J4 works like a small senior product crew: focused discovery, sharp design decisions, careful engineering, and practical release planning.
+          </p>
         </motion.div>
 
-        <motion.div
-          className="culture-container glass-panel reverse"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={fadeIn}
-        >
-          <motion.div
-            className="culture-image-wrapper"
-            whileHover={{ scale: 1.02 }}
-            transition={{ duration: 0.3 }}
-          >
-            <img src={professionalMeetingImg} alt="Professional Meeting" className="culture-image" />
-          </motion.div>
-          <div className="culture-text">
-            <span className="eyebrow"><span className="eyebrow-dot" />Partnership</span>
-            <h2 className="section-title text-gradient">Your Trusted Digital Partner</h2>
-            <p className="culture-desc">
-              We forge lasting relationships with our clients. From the initial handshake to deployment and
-              beyond, we operate with utter transparency and a relentless focus on delivering high-value solutions.
-            </p>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              className="secondary-btn"
-            >
-              Partner With Us
-            </motion.button>
-          </div>
-        </motion.div>
+        <div className="culture-timeline">
+          {studioMoments.map((moment, index) => {
+            const isReverse = index % 2 === 1;
 
-        <motion.div
-          className="culture-container glass-panel"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={fadeIn}
-        >
-          <div className="culture-text">
-            <span className="eyebrow"><span className="eyebrow-dot" />Strategy</span>
-            <h2 className="section-title text-gradient">Global Scale Visionary Strategy</h2>
-            <p className="culture-desc">
-              We design roadmaps that launch startups into enterprise-grade competitors. Leverage our unparalleled domain knowledge to execute a hyper-growth strategy with precision.
-            </p>
-            <ul className="culture-bullets">
-              <li><Globe size={18} /> International Launch Strategy</li>
-              <li><Zap size={18} /> High-Octane Rapid Market Deployments</li>
-            </ul>
-          </div>
-          <motion.div
-            className="culture-image-wrapper"
-            whileHover={{ scale: 1.02 }}
-            transition={{ duration: 0.3 }}
-          >
-            <img src={globalReachImg} alt="Strategic IT Collaboration" className="culture-image" />
-          </motion.div>
-        </motion.div>
+            return (
+              <motion.article
+                className={`culture-moment ${isReverse ? 'reverse' : ''}`}
+                data-tone={moment.tone}
+                key={moment.kicker}
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.22 }}
+                variants={fadeIn}
+              >
+                <div className="culture-copy">
+                  <span className="culture-kicker">{moment.kicker}</span>
+                  <h3>{moment.title}</h3>
+                  <p>{moment.description}</p>
+                  <ul className="culture-points">
+                    {moment.points.map((point) => {
+                      const PointIcon = point.icon;
+                      return (
+                        <li key={point.text}>
+                          <PointIcon size={18} />
+                          <span>{point.text}</span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </div>
 
-        <motion.div
-          className="culture-container glass-panel reverse"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          variants={fadeIn}
-        >
-          <motion.div
-            className="culture-image-wrapper"
-            whileHover={{ scale: 1.02 }}
-            transition={{ duration: 0.3 }}
-          >
-            <img src={visionaryStrategyImg} alt="Corporate Executive Meeting" className="culture-image" />
-          </motion.div>
-          <div className="culture-text">
-            <span className="eyebrow"><span className="eyebrow-dot" />Execution</span>
-            <h2 className="section-title text-gradient">State-of-the-Art Execution</h2>
-            <p className="culture-desc">
-              When the stakes are high, you need absolute perfection. Our boardroom features industry veterans who dictate architectural excellence down to the very last byte of code.
-            </p>
-          </div>
-        </motion.div>
+                <motion.div
+                  className="culture-art"
+                  whileHover={{ y: -8, scale: 1.015 }}
+                  transition={{ duration: 0.35 }}
+                >
+                  <img src={moment.image} alt={moment.imageAlt} />
+                </motion.div>
+              </motion.article>
+            );
+          })}
+        </div>
       </section>
 
       {/* Features Section */}

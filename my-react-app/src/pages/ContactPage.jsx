@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { Mail, Phone, MapPin, Send, CheckCircle } from 'lucide-react';
 import './ContactPage.css';
+import contactVisualImg from '../assets/Synced smartphones and app interface.png';
+import cloudNetworkImg from '../assets/Cloud services 3D network illustration.png';
 
 const ContactPage = () => {
   const [formData, setFormData] = useState({
@@ -64,6 +66,9 @@ const ContactPage = () => {
           <p className="info-description">
             Reach out to us through any of these channels. We're here to help!
           </p>
+          <div className="contact-visual" aria-hidden="true">
+            <img src={contactVisualImg} alt="" />
+          </div>
           
           <div className="contact-info-cards">
             {contactInfo.map((info, index) => {
@@ -183,6 +188,7 @@ const ContactPage = () => {
 
       <div className="map-section">
         <div className="map-placeholder">
+          <img src={cloudNetworkImg} alt="" className="map-visual" aria-hidden="true" />
           <MapPin className="map-icon" size={60} />
           <p className="map-text">San Francisco, California</p>
         </div>

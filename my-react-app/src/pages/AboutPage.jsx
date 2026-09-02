@@ -1,6 +1,9 @@
 import React from 'react';
 import { Target, Users, Award, Heart, Zap, Shield } from 'lucide-react';
 import './AboutPage.css';
+import teamworkImg from '../assets/Holographic Teamwork Around a Glowing Table.png';
+import softwareEcosystemImg from '../assets/Floating blue software ecosystem.png';
+import transformationImg from '../assets/Glowing digital transformation ecosystem.png';
 
 const AboutPage = () => {
   const values = [
@@ -56,6 +59,9 @@ const AboutPage = () => {
             achieve their digital transformation goals.
           </p>
         </div>
+        <div className="about-hero-visual" aria-hidden="true">
+          <img src={softwareEcosystemImg} alt="" />
+        </div>
       </div>
 
       <div className="about-story">
@@ -81,8 +87,12 @@ const AboutPage = () => {
             </div>
           </div>
           <div className="story-visual">
-            <div className="visual-card card-primary"></div>
-            <div className="visual-card card-secondary"></div>
+            <div className="visual-card card-primary">
+              <img src={teamworkImg} alt="Holographic teamwork around a glowing table" />
+            </div>
+            <div className="visual-card card-secondary">
+              <img src={transformationImg} alt="Glowing digital transformation ecosystem" />
+            </div>
           </div>
         </div>
       </div>

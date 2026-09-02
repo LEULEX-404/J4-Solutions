@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 import { ExternalLink, ChevronLeft, ChevronRight } from 'lucide-react';
 import './PortfolioPage.css';
+import webBlueprintImg from '../assets/Floating web development blueprint.png';
+import mobileAppImg from '../assets/Synced smartphones and app interface.png';
+import uiuxImg from '../assets/Isolated 3D UIUX Design Toolkit.png';
+import softwareEcosystemImg from '../assets/Floating blue software ecosystem.png';
+import cloudImg from '../assets/Cloud services 3D network illustration.png';
+import aiNetworkImg from '../assets/Transparent AI Neural Network Illustration.png';
 
 const PortfolioPage = () => {
   const [currentCategory, setCurrentCategory] = useState('all');
@@ -15,7 +21,9 @@ const PortfolioPage = () => {
       category: "web",
       description: "Modern online shopping platform with real-time inventory and payment integration",
       tech: ["React", "Node.js", "MongoDB"],
-      color: "#2980b9"
+      color: "#2980b9",
+      image: webBlueprintImg,
+      imageAlt: "Floating web development blueprint"
     },
     {
       id: 2,
@@ -23,7 +31,9 @@ const PortfolioPage = () => {
       category: "mobile",
       description: "Cross-platform mobile app for tracking workouts and nutrition",
       tech: ["React Native", "Firebase", "Redux"],
-      color: "#3498db"
+      color: "#3498db",
+      image: mobileAppImg,
+      imageAlt: "Synced mobile application screens"
     },
     {
       id: 3,
@@ -31,7 +41,9 @@ const PortfolioPage = () => {
       category: "design",
       description: "Complete brand identity and UI/UX design for tech startup",
       tech: ["Figma", "Adobe Suite", "Prototyping"],
-      color: "#2c3e50"
+      color: "#2c3e50",
+      image: uiuxImg,
+      imageAlt: "UI and UX design toolkit"
     },
     {
       id: 4,
@@ -39,7 +51,9 @@ const PortfolioPage = () => {
       category: "enterprise",
       description: "Custom CRM solution for managing customer relationships and sales",
       tech: ["Angular", "Java", "PostgreSQL"],
-      color: "#1e5f8c"
+      color: "#1e5f8c",
+      image: softwareEcosystemImg,
+      imageAlt: "Floating blue software ecosystem"
     },
     {
       id: 5,
@@ -47,7 +61,9 @@ const PortfolioPage = () => {
       category: "web",
       description: "Property listing platform with advanced search and virtual tours",
       tech: ["Vue.js", "Python", "AWS"],
-      color: "#2874a6"
+      color: "#2874a6",
+      image: cloudImg,
+      imageAlt: "Cloud services network illustration"
     },
     {
       id: 6,
@@ -55,7 +71,9 @@ const PortfolioPage = () => {
       category: "mobile",
       description: "Telemedicine application connecting patients with doctors",
       tech: ["Flutter", "Node.js", "WebRTC"],
-      color: "#1f618d"
+      color: "#1f618d",
+      image: aiNetworkImg,
+      imageAlt: "AI neural network interface"
     }
   ];
 
@@ -109,7 +127,8 @@ const PortfolioPage = () => {
               }`}
               style={{ '--project-color': project.color }}
             >
-              <div className="project-image-placeholder">
+              <div className="project-image">
+                <img src={project.image} alt={project.imageAlt} />
                 <div className="project-overlay">
                   <ExternalLink className="external-icon" size={40} />
                 </div>
