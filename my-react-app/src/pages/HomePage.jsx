@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 // eslint-disable-next-line no-unused-vars
 import { motion, useInView, animate } from 'framer-motion';
-import { ArrowRight, Code, Smartphone, Globe, Zap, Shield, TrendingUp, Users } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ArrowRight, ArrowUpRight, Globe, Zap, Shield, TrendingUp, Users } from 'lucide-react';
 import './HomePage.css';
 import teamCollaborationImg from '../assets/attractive_team.png';
 import professionalMeetingImg from '../assets/stunning_meeting.png';
@@ -20,64 +21,6 @@ const staggerContainer = {
     transition: { staggerChildren: 0.2 }
   }
 };
-
-// ---- Network canvas data (hero background) ----
-const NETWORK_NODES = [
-  [90, 120], [260, 70], [430, 150], [130, 290],
-  [610, 90], [790, 170], [960, 110], [1080, 270],
-  [180, 440], [360, 520], [540, 580], [700, 460],
-  [880, 520], [1040, 430], [300, 610], [660, 650]
-];
-
-const NETWORK_LINES = [
-  [0, 1], [1, 2], [2, 4], [4, 5], [5, 6], [6, 7], [3, 1], [3, 8],
-  [8, 9], [9, 10], [10, 11], [11, 12], [12, 13], [9, 14], [10, 15]
-];
-
-const NETWORK_SPARKS = [
-  { from: [430, 150], to: [540, 580], dur: '6s', begin: '0s', className: 'spark-a' },
-  { from: [610, 90], to: [700, 460], dur: '7s', begin: '1.5s', className: 'spark-b' },
-  { from: [1040, 430], to: [960, 110], dur: '5.5s', begin: '3s', className: 'spark-c' }
-];
-
-const NetworkCanvas = () => (
-  <svg
-    className="network-canvas"
-    viewBox="0 0 1200 700"
-    preserveAspectRatio="xMidYMid slice"
-    aria-hidden="true"
-  >
-    {NETWORK_LINES.map(([a, b], i) => {
-      const [x1, y1] = NETWORK_NODES[a];
-      const [x2, y2] = NETWORK_NODES[b];
-      return (
-        <line
-          key={`line-${i}`}
-          x1={x1} y1={y1} x2={x2} y2={y2}
-          className="net-line"
-          style={{ animationDelay: `${(i % 6) * 0.4}s` }}
-        />
-      );
-    })}
-    {NETWORK_NODES.map(([x, y], i) => (
-      <circle
-        key={`node-${i}`}
-        cx={x}
-        cy={y}
-        r={i % 3 === 0 ? 3.5 : 2.5}
-        className={`net-node ${i % 2 === 0 ? 'net-node-blue' : 'net-node-violet'}`}
-        style={{ animationDelay: `${(i % 5) * 0.5}s` }}
-      />
-    ))}
-    {NETWORK_SPARKS.map((s, i) => (
-      <circle key={`spark-${i}`} r="3.5" className={`net-spark ${s.className}`}>
-        <animate attributeName="cx" values={`${s.from[0]};${s.to[0]}`} dur={s.dur} begin={s.begin} repeatCount="indefinite" />
-        <animate attributeName="cy" values={`${s.from[1]};${s.to[1]}`} dur={s.dur} begin={s.begin} repeatCount="indefinite" />
-        <animate attributeName="opacity" values="0;1;1;0" dur={s.dur} begin={s.begin} repeatCount="indefinite" />
-      </circle>
-    ))}
-  </svg>
-);
 
 // ---- Count-up stat ----
 const StatNumber = ({ value, suffix = '', duration = 1.6 }) => {
@@ -103,26 +46,6 @@ const StatNumber = ({ value, suffix = '', duration = 1.6 }) => {
 };
 
 const HomePage = () => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-
-  const heroSlides = [
-    {
-      title: "Transform Your Vision Into Reality",
-      subtitle: "Enterprise-grade software solutions designed just for you",
-      icon: Code
-    },
-    {
-      title: "Mobile-First Development",
-      subtitle: "Responsive, scalable apps that work seamlessly everywhere",
-      icon: Smartphone
-    },
-    {
-      title: "Global Digital Solutions",
-      subtitle: "Connecting modern businesses to the rest of the world",
-      icon: Globe
-    }
-  ];
-
   const features = [
     { icon: Zap, title: "Lightning Fast", desc: "Optimized architecture and performance for absolute speed." },
     { icon: Shield, title: "Secure & Reliable", desc: "Enterprise-grade security standards to protect your assets." },
@@ -135,73 +58,77 @@ const HomePage = () => {
     { value: 99, suffix: '%', label: 'Satisfaction Rate' }
   ];
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-    }, 6000);
-    return () => clearInterval(interval);
-  }, [heroSlides.length]);
-
-  const CurrentIcon = heroSlides[currentSlide].icon;
-
   return (
     <div className="home-page">
       {/* Hero Section */}
       <section className="hero-section">
-        <NetworkCanvas />
-        <motion.div
-          className="hero-content"
-          initial="hidden"
-          animate="visible"
-          variants={fadeIn}
-        >
+        <div className="hero-glow hero-glow-blue" aria-hidden="true" />
+        <div className="hero-glow hero-glow-violet" aria-hidden="true" />
+        <div className="hero-grain" aria-hidden="true" />
+
+        <div className="hero-shell">
           <motion.div
-            className="hero-icon-wrapper glass-panel"
-            initial={{ scale: 0 }}
-            animate={{ scale: 1, rotate: 360 }}
-            transition={{ type: "spring", stiffness: 100, damping: 20 }}
+            className="hero-copy"
+            initial={{ opacity: 0, y: 28 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.85, ease: [0.22, 1, 0.36, 1] }}
           >
-            <CurrentIcon className="hero-icon" size={52} />
+            <div className="hero-kicker">
+              <span>Independent digital studio</span>
+              <span className="hero-kicker-line" />
+              <span>Colombo · Worldwide</span>
+            </div>
+
+            <h1 className="hero-title">
+              We build digital<br />
+              products with <span>impact.</span>
+            </h1>
+
+            <div className="hero-copy-footer">
+              <p className="hero-subtitle">
+                Strategy, design and engineering brought together to turn ambitious ideas into software people choose to use.
+              </p>
+              <div className="hero-actions">
+                <Link to="/contact" className="hero-primary-action">
+                  Start a project <ArrowUpRight size={19} />
+                </Link>
+                <Link to="/portfolio" className="hero-text-action">
+                  Explore our work <ArrowRight size={18} />
+                </Link>
+              </div>
+            </div>
           </motion.div>
 
-          <div className="hero-text">
-            <motion.h1
-              key={currentSlide}
-              initial={{ opacity: 0, x: -50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6 }}
-              className="hero-title"
-            >
-              {heroSlides[currentSlide].title}
-            </motion.h1>
-            <motion.p
-              key={`sub-${currentSlide}`}
-              initial={{ opacity: 0, x: 50 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="hero-subtitle"
-            >
-              {heroSlides[currentSlide].subtitle}
-            </motion.p>
-          </div>
-
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="cta-button"
+          <motion.div
+            className="hero-visual"
+            initial={{ opacity: 0, x: 36, scale: 0.97 }}
+            animate={{ opacity: 1, x: 0, scale: 1 }}
+            transition={{ duration: 1.05, delay: 0.15, ease: [0.22, 1, 0.36, 1] }}
           >
-            Start a Project
-            <ArrowRight className="cta-icon" size={20} />
-          </motion.button>
+            <div className="hero-frame-label"><span>J4</span> / Scene 01</div>
+            <div className="hero-image-wrap">
+              <img src={teamCollaborationImg} alt="J4 Solutions team collaborating on a digital product" className="hero-image" />
+              <div className="hero-image-wash" aria-hidden="true" />
+            </div>
+            <div className="hero-visual-caption">
+              <span>One team.</span>
+              <strong>From first sketch<br />to final release.</strong>
+            </div>
+            <span className="hero-corner hero-corner-top" aria-hidden="true" />
+            <span className="hero-corner hero-corner-bottom" aria-hidden="true" />
+          </motion.div>
+        </div>
 
-          <div className="slider-dots">
-            {heroSlides.map((_, index) => (
-              <span
-                key={index}
-                className={`dot ${currentSlide === index ? 'active' : ''}`}
-                onClick={() => setCurrentSlide(index)}
-              />
-            ))}
+        <motion.div
+          className="hero-reel"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.75 }}
+        >
+          <span className="hero-reel-index">01 / 04</span>
+          <div className="hero-reel-track"><span /></div>
+          <div className="hero-reel-services">
+            <span>Product strategy</span><span>Experience design</span><span>Software engineering</span>
           </div>
         </motion.div>
       </section>
