@@ -97,6 +97,24 @@ body.is-loading {
   z-index: 1;
 }
 
+.page-entry {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  animation: page-enter 420ms ease-out both;
+}
+
+@keyframes page-enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-entry { animation: none; }
+}
+
 /* Animated Dark Mode Professional Background */
 .app::before {
   content: '';

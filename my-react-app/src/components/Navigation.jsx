@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { NavLink, Link } from 'react-router-dom';
-import { ArrowUpRight, Briefcase, FolderOpen, Home, Mail, Menu, Moon, Sun, Users, X } from 'lucide-react';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
+import { NavLink, Link, useLocation } from 'react-router-dom';
+import { ArrowUpRight, Briefcase, FolderOpen, Home, Mail, Menu, Users, X } from 'lucide-react';
 import logo from '../assets/logo.png';
 import './Navigation.css';
 
@@ -12,16 +12,35 @@ const navItems = [
   { path: '/contact', label: 'Contact', icon: Mail }
 ];
 
-const Navigation = ({ isDarkMode, toggleTheme }) => {
+const Navigation = () => {
+  const { pathname } = useLocation();
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isPastHero, setIsPastHero] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 36);
+  useLayoutEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 36);
+      const hero = document.querySelector('.hero-section');
+      setIsPastHero(!hero || window.scrollY >= hero.offsetTop + hero.offsetHeight - 120);
+    };
     handleScroll();
     window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+    window.addEventListener('resize', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener('resize', handleScroll);
+    };
+  }, [pathname]);
+
+  useEffect(() => {
+    if (!isMobileMenuOpen) return undefined;
+    const closeOnEscape = (event) => {
+      if (event.key === 'Escape') setIsMobileMenuOpen(false);
+    };
+    window.addEventListener('keydown', closeOnEscape);
+    return () => window.removeEventListener('keydown', closeOnEscape);
+  }, [isMobileMenuOpen]);
 
   useEffect(() => {
     document.body.classList.toggle('nav-open', isMobileMenuOpen);
@@ -29,27 +48,30 @@ const Navigation = ({ isDarkMode, toggleTheme }) => {
   }, [isMobileMenuOpen]);
 
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
+  const handleNavClick = () => {
+    closeMobileMenu();
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  };
 
   return (
     <>
-      <nav className={`navigation ${isScrolled ? 'scrolled' : ''}`} aria-label="Primary navigation">
+      <nav className={`navigation ${isScrolled ? 'scrolled' : ''} ${pathname !== '/' || isPastHero ? 'is-light' : ''}`} aria-label="Primary navigation">
         <div className="nav-frame">
-          <Link to="/" className="nav-identity" onClick={closeMobileMenu} aria-label="J4 Solutions home">
+          <Link to="/" className="nav-identity" onClick={handleNavClick} aria-label="J4 Solutions home">
             <span className="brand-mark">
-              <img src={logo} alt="J4 Solutions" />
+              <img src={logo} alt="" />
             </span>
             <span className="brand-lockup">
               <strong>J4 Solutions</strong>
-              <span>Digital studio / Colombo</span>
+              <span>Digital studio / Sri Lanka</span>
             </span>
           </Link>
 
           <div className="nav-directory">
-            <span className="directory-label" aria-hidden="true">Index</span>
-            <div className={`nav-menu ${isMobileMenuOpen ? 'open' : ''}`}>
+            <div id="primary-nav-links" className={`nav-menu ${isMobileMenuOpen ? 'open' : ''}`}>
               <div className="mobile-menu-head">
                 <span>Navigate</span>
-                <span>J4 / 2026</span>
+                <span>J4 / Studio</span>
               </div>
               {navItems.map((item, index) => {
                 const Icon = item.icon;
@@ -59,7 +81,7 @@ const Navigation = ({ isDarkMode, toggleTheme }) => {
                     to={item.path}
                     end={item.path === '/'}
                     className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}
-                    onClick={closeMobileMenu}
+                    onClick={handleNavClick}
                   >
                     <span className="nav-number">{String(index + 1).padStart(2, '0')}</span>
                     <Icon className="nav-icon" size={17} strokeWidth={1.7} />
@@ -68,39 +90,30 @@ const Navigation = ({ isDarkMode, toggleTheme }) => {
                 );
               })}
               <div className="mobile-menu-foot">
-                <span><i /> Available for selected projects</span>
+                <span>Kaduwela, Sri Lanka</span>
                 <span>UTC +05:30</span>
               </div>
             </div>
           </div>
 
           <div className="nav-utilities">
-            <span className="nav-availability" aria-label="Available for selected projects">
-              <i /> Available
-            </span>
-            <button
-              className="theme-toggle"
-              onClick={toggleTheme}
-              aria-label={isDarkMode ? 'Switch to light mode' : 'Switch to dark mode'}
-              title={isDarkMode ? 'Light mode' : 'Dark mode'}
-            >
-              {isDarkMode ? <Sun size={18} /> : <Moon size={18} />}
-            </button>
-            <Link to="/contact" className="nav-brief" onClick={closeMobileMenu}>
-              Brief us <ArrowUpRight size={17} />
+            <Link to="/contact" className="nav-brief" onClick={handleNavClick}>
+              Let's talk <ArrowUpRight size={17} />
             </Link>
             <button
+              type="button"
               className="mobile-menu-toggle"
               onClick={() => setIsMobileMenuOpen((open) => !open)}
               aria-label={isMobileMenuOpen ? 'Close menu' : 'Open menu'}
               aria-expanded={isMobileMenuOpen}
+              aria-controls="primary-nav-links"
             >
               {isMobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
             </button>
           </div>
         </div>
       </nav>
-      {isMobileMenuOpen && <button className="mobile-overlay" onClick={closeMobileMenu} aria-label="Close menu" />}
+      {isMobileMenuOpen && <button type="button" className="mobile-overlay" onClick={closeMobileMenu} aria-label="Close menu" />}
     </>
   );
 };

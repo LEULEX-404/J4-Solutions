@@ -1,16 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 // eslint-disable-next-line no-unused-vars
-import { motion, useInView, animate } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, Globe, Zap, Shield, TrendingUp, Users } from 'lucide-react';
 import './HomePage.css';
-import teamworkImg from '../assets/Holographic Teamwork Around a Glowing Table.png';
 import heroPosterLogo from '../assets/logo.png';
 
 const introVideoUrl = new URL('../assets/Intro video.mp4', import.meta.url).href;
-import webBlueprintImg from '../assets/Floating web development blueprint.png';
-import transformationImg from '../assets/Glowing digital transformation ecosystem.png';
-import aiNetworkImg from '../assets/Transparent AI Neural Network Illustration.png';
+import workshopImg from '../assets/photos/team-workshop.jpg';
+import collaborationImg from '../assets/photos/team-collaboration.jpg';
+import developerImg from '../assets/photos/developer-work.jpg';
+import analyticsImg from '../assets/photos/analytics.jpg';
 
 const fadeIn = {
   hidden: { opacity: 0, y: 30 },
@@ -25,29 +25,6 @@ const staggerContainer = {
   }
 };
 
-// ---- Count-up stat ----
-const StatNumber = ({ value, suffix = '', duration = 1.6 }) => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.6 });
-  const [display, setDisplay] = useState(0);
-
-  useEffect(() => {
-    if (!isInView) return;
-    const controls = animate(0, value, {
-      duration,
-      ease: 'easeOut',
-      onUpdate: (v) => setDisplay(Math.round(v))
-    });
-    return () => controls.stop();
-  }, [isInView, value, duration]);
-
-  return (
-    <div ref={ref} className="stat-number text-gradient">
-      {display}{suffix}
-    </div>
-  );
-};
-
 const HomePage = () => {
   const [isHeroVideoReady, setIsHeroVideoReady] = useState(false);
   const [hasHeroVideoError, setHasHeroVideoError] = useState(false);
@@ -57,8 +34,8 @@ const HomePage = () => {
       kicker: '01 / Intent',
       title: 'Start with the real business problem.',
       description: 'Before design or code, we map the goal, users, constraints, and the fastest path to a useful first release.',
-      image: webBlueprintImg,
-      imageAlt: 'Floating web development blueprint',
+      image: workshopImg,
+      imageAlt: 'People mapping ideas together in a workshop',
       tone: 'cyan',
       points: [
         { icon: Users, text: 'Stakeholder alignment' },
@@ -69,8 +46,8 @@ const HomePage = () => {
       kicker: '02 / Craft',
       title: 'Design and engineering move together.',
       description: 'Interfaces, data models, and integrations are shaped in one loop, so the product feels polished without slowing delivery.',
-      image: teamworkImg,
-      imageAlt: 'Holographic teamwork around a glowing planning table',
+      image: collaborationImg,
+      imageAlt: 'People collaborating around laptops',
       tone: 'violet',
       points: [
         { icon: Zap, text: 'Rapid working prototypes' },
@@ -81,8 +58,8 @@ const HomePage = () => {
       kicker: '03 / Scale',
       title: 'Launch clean, then grow with control.',
       description: 'We keep the system practical after launch with maintainable architecture, thoughtful automation, and room for expansion.',
-      image: transformationImg,
-      imageAlt: 'Glowing digital transformation ecosystem',
+      image: developerImg,
+      imageAlt: 'Software development work on a laptop',
       tone: 'green',
       points: [
         { icon: Globe, text: 'Cloud-ready delivery' },
@@ -93,8 +70,8 @@ const HomePage = () => {
       kicker: '04 / Intelligence',
       title: 'Use AI where it earns its place.',
       description: 'We add automation and intelligence only when it improves the workflow, protects time, or reveals decisions faster.',
-      image: aiNetworkImg,
-      imageAlt: 'Transparent artificial intelligence neural network',
+      image: analyticsImg,
+      imageAlt: 'Analytics dashboard displayed on a laptop',
       tone: 'amber',
       points: [
         { icon: Zap, text: 'Useful automation' },
@@ -107,12 +84,6 @@ const HomePage = () => {
     { icon: Zap, title: "Lightning Fast", desc: "Optimized architecture and performance for absolute speed." },
     { icon: Shield, title: "Secure & Reliable", desc: "Enterprise-grade security standards to protect your assets." },
     { icon: TrendingUp, title: "Scalable Growth", desc: "Cloud-native solutions designed to grow infinitely with you." }
-  ];
-
-  const stats = [
-    { value: 50, suffix: '+', label: 'Projects Completed' },
-    { value: 30, suffix: '+', label: 'Enterprise Clients' },
-    { value: 99, suffix: '%', label: 'Satisfaction Rate' }
   ];
 
   return (
@@ -216,7 +187,7 @@ const HomePage = () => {
           variants={fadeIn}
         >
           <span className="eyebrow"><span className="eyebrow-dot" />Studio Method</span>
-          <h2 className="section-title">A calmer way to build ambitious software.</h2>
+          <h2 className="section-title">A calmer way to build <em>ambitious software.</em></h2>
           <p className="culture-desc">
             J4 works like a small senior product crew: focused discovery, sharp design decisions, careful engineering, and practical release planning.
           </p>
@@ -275,7 +246,7 @@ const HomePage = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          Why Choose J4 Solutions?
+          The details make the <em>difference.</em>
         </motion.h2>
 
         <motion.div
@@ -305,23 +276,14 @@ const HomePage = () => {
         </motion.div>
       </section>
 
-      {/* Stats Section */}
-      <motion.section
-        className="stats-section glass-panel"
-        initial={{ opacity: 0, scale: 0.9 }}
-        whileInView={{ opacity: 1, scale: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8 }}
-      >
-        <div className="stats-grid">
-          {stats.map((stat) => (
-            <div className="stat-item" key={stat.label}>
-              <StatNumber value={stat.value} suffix={stat.suffix} />
-              <div className="stat-label">{stat.label}</div>
-            </div>
-          ))}
+      <section className="home-close">
+        <div>
+          <span className="eyebrow">Your next move</span>
+          <h2>Good ideas deserve a <em>clear path forward.</em></h2>
+          <p>Tell us what you are building. We will help you shape the right first step.</p>
         </div>
-      </motion.section>
+        <Link to="/contact" className="home-close-link">Start a conversation <ArrowUpRight size={20} /></Link>
+      </section>
     </div>
   );
 };

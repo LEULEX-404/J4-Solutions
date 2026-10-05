@@ -155,7 +155,7 @@ function clampN(v, lo, hi) {
 const BALL_DEFAULTS = { spread: 100, turn: 0, tilt: 0 };
 const POINTER_DEFAULTS = { drag: 100, damping: 20 };
 
-function __OriginkitBase_OrbBurst(props) {
+function OriginkitBaseOrbBurst(props) {
   const {
     style,
     dotColor = '#F4F1EA',
@@ -170,27 +170,32 @@ function __OriginkitBase_OrbBurst(props) {
     height,
   } = props;
 
-  const ball_ = { ...BALL_DEFAULTS, ...(ball || {}) };
-  const pointer_ = { ...POINTER_DEFAULTS, ...(pointer || {}) };
-
   const canvasRef = useRef(null);
   const sizeRef = useRef({ w: 0, h: 0 });
-  sizeRef.current = { w: num(width, 0), h: num(height, 0) };
-
   const vRef = useRef({});
-  vRef.current = {
-    dot: dotColor,
-    acc: accentColor,
-    speed: clampN(num(speed, 50), -100, 100) / 50,
-    density: clampN(num(density, 100), 20, 300) / 100,
-    dotSize: clampN(num(dotSize, 100), 20, 300) / 100,
-    spinTurns: Math.round(clampN(num(spinTurns, 1), -3, 3)),
-    drag: clampN(num(pointer_.drag, 100), 0, 300) / 100,
-    damping: clampN(num(pointer_.damping, 20), 1, 100),
-    spread: clampN(num(ball_.spread, 100), 40, 180) / 100,
-    turn: (clampN(num(ball_.turn, 0), -180, 180) * Math.PI) / 180,
-    tilt: (clampN(num(ball_.tilt, 0), -90, 90) * Math.PI) / 180,
-  };
+  const ballSpread = ball?.spread ?? BALL_DEFAULTS.spread;
+  const ballTurn = ball?.turn ?? BALL_DEFAULTS.turn;
+  const ballTilt = ball?.tilt ?? BALL_DEFAULTS.tilt;
+  const pointerDrag = pointer?.drag ?? POINTER_DEFAULTS.drag;
+  const pointerDamping = pointer?.damping ?? POINTER_DEFAULTS.damping;
+
+  useEffect(() => {
+    sizeRef.current = { w: num(width, 0), h: num(height, 0) };
+    vRef.current = {
+      dot: dotColor,
+      acc: accentColor,
+      speed: clampN(num(speed, 50), -100, 100) / 50,
+      density: clampN(num(density, 100), 20, 300) / 100,
+      dotSize: clampN(num(dotSize, 100), 20, 300) / 100,
+      spinTurns: Math.round(clampN(num(spinTurns, 1), -3, 3)),
+      drag: clampN(num(pointerDrag, 100), 0, 300) / 100,
+      damping: clampN(num(pointerDamping, 20), 1, 100),
+      spread: clampN(num(ballSpread, 100), 40, 180) / 100,
+      turn: (clampN(num(ballTurn, 0), -180, 180) * Math.PI) / 180,
+      tilt: (clampN(num(ballTilt, 0), -90, 90) * Math.PI) / 180,
+    };
+  }, [width, height, dotColor, accentColor, speed, density, dotSize, spinTurns,
+    pointerDrag, pointerDamping, ballSpread, ballTurn, ballTilt]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -294,7 +299,7 @@ function __OriginkitBase_OrbBurst(props) {
       drag.vy = 0;
       try {
         canvas.setPointerCapture(e.pointerId);
-      } catch (err) {
+      } catch {
         // Ignore pointer capture errors.
       }
     };
@@ -373,5 +378,5 @@ const __originkitPresetProps = {
 };
 
 export default function OrbBurst(props = {}) {
-  return <__OriginkitBase_OrbBurst {...__originkitPresetProps} {...props} />;
+  return <OriginkitBaseOrbBurst {...__originkitPresetProps} {...props} />;
 }

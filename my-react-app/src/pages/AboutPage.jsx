@@ -1,104 +1,77 @@
 import React from 'react';
-import { Target, Users, Award, Heart, Zap, Shield } from 'lucide-react';
+import { Target, Users, Shield, ArrowUpRight } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import './AboutPage.css';
-import teamworkImg from '../assets/Holographic Teamwork Around a Glowing Table.png';
-import softwareEcosystemImg from '../assets/Floating blue software ecosystem.png';
-import transformationImg from '../assets/Glowing digital transformation ecosystem.png';
+import workshopImg from '../assets/photos/team-workshop.jpg';
+import colomboImg from '../assets/photos/colombo-skyline.jpg';
+import collaborationImg from '../assets/photos/business-meeting.jpg';
 
 const AboutPage = () => {
   const values = [
     {
       icon: Target,
-      title: "Mission Driven",
-      description: "We're committed to delivering excellence in every project we undertake"
+      title: "Start with clarity",
+      description: "We work from the business problem and the people the product needs to serve."
     },
     {
       icon: Users,
-      title: "Client Focused",
-      description: "Your success is our success. We build lasting partnerships"
-    },
-    {
-      icon: Award,
-      title: "Quality First",
-      description: "We maintain the highest standards in code quality and design"
-    },
-    {
-      icon: Heart,
-      title: "Passionate Team",
-      description: "Our team loves what they do and it shows in our work"
-    },
-    {
-      icon: Zap,
-      title: "Innovation",
-      description: "We stay ahead with the latest technologies and methodologies"
+      title: "Build together",
+      description: "Decisions stay visible, feedback stays welcome, and the work stays connected to your goals."
     },
     {
       icon: Shield,
-      title: "Reliability",
-      description: "We deliver on time, every time, with transparent communication"
+      title: "Design for longevity",
+      description: "Useful interfaces and maintainable technology make a better foundation for growth."
     }
-  ];
-
-  const team = [
-    { name: "Sarah Johnson", role: "CEO & Founder", color: "#2980b9" },
-    { name: "Michael Chen", role: "CTO", color: "#3498db" },
-    { name: "Emily Rodriguez", role: "Lead Designer", color: "#1e5f8c" },
-    { name: "David Kim", role: "Senior Developer", color: "#2874a6" }
   ];
 
   return (
     <div className="about-page">
       <div className="about-hero">
         <div className="about-hero-content">
-          <h1 className="about-title">About J4 Solutions</h1>
-          <p className="about-tagline">Just for You - Because Your Success Matters</p>
+          <span className="editorial-eyebrow">03 / Our studio</span>
+          <h1 className="about-title">Built with care. <em>Made for you.</em></h1>
+          <p className="about-tagline">Just for you. Built with purpose.</p>
           <p className="about-description">
-            We are a passionate team of developers, designers, and innovators dedicated to 
-            transforming your ideas into powerful digital solutions. Founded with a vision 
-            to make technology accessible and impactful, we've helped numerous businesses 
-            achieve their digital transformation goals.
+            Based in Kaduwela, Sri Lanka, J4 Solutions brings strategy, design, and engineering together to create digital products shaped around real needs.
           </p>
         </div>
         <div className="about-hero-visual" aria-hidden="true">
-          <img src={softwareEcosystemImg} alt="" />
+          <img src={colomboImg} alt="Colombo city skyline in Sri Lanka" />
         </div>
       </div>
 
       <div className="about-story">
         <div className="story-container">
           <div className="story-content">
-            <h2 className="story-title">Our Story</h2>
+            <span className="editorial-eyebrow">The story</span>
+            <h2 className="story-title">Curious minds. <em>Clear purpose.</em></h2>
             <div className="story-text">
               <p>
-                J4 Solutions was born from a simple belief: every business deserves custom 
-                software solutions that truly fit their needs. "Just for You" isn't just our 
-                tagline - it's our commitment to personalized service and tailored solutions.
+                Every useful product starts with listening. We learn what needs to change, identify the constraints, and agree on a practical direction before building.
               </p>
               <p>
-                Since our inception, we've grown from a small team of passionate developers 
-                to a full-service software development company, but we've never lost sight 
-                of what matters most - our clients and the quality of our work.
+                From an early concept to a working release, we pair thoughtful design with dependable development. The result should be clear to use and straightforward to maintain.
               </p>
               <p>
-                Today, we continue to push boundaries, embrace new technologies, and deliver 
-                solutions that exceed expectations. Every project is an opportunity to create 
-                something remarkable.
+                We stay close to the people using the product and the team running it. That keeps each decision connected to a useful outcome.
               </p>
             </div>
           </div>
           <div className="story-visual">
             <div className="visual-card card-primary">
-              <img src={teamworkImg} alt="Holographic teamwork around a glowing table" />
+              <img src={workshopImg} alt="Collaborative planning session" />
             </div>
             <div className="visual-card card-secondary">
-              <img src={transformationImg} alt="Glowing digital transformation ecosystem" />
+              <img src={collaborationImg} alt="People working together at computers" />
             </div>
           </div>
         </div>
       </div>
 
       <div className="about-values">
-        <h2 className="values-title">Our Core Values</h2>
+        <span className="editorial-eyebrow">What guides us</span>
+        <h2 className="values-title">The way we <em>work together.</em></h2>
         <div className="values-grid">
           {values.map((value, index) => {
             const ValueIcon = value.icon;
@@ -120,21 +93,10 @@ const AboutPage = () => {
       </div>
 
       <div className="about-team">
-        <h2 className="team-title">Meet Our Team</h2>
-        <p className="team-subtitle">The talented people behind J4 Solutions</p>
-        <div className="team-grid">
-          {team.map((member, index) => (
-            <div 
-              key={index} 
-              className="team-member"
-              style={{ '--member-color': member.color }}
-            >
-              <div className="member-avatar"></div>
-              <h3 className="member-name">{member.name}</h3>
-              <p className="member-role">{member.role}</p>
-            </div>
-          ))}
-        </div>
+        <span className="eyebrow">Let us talk</span>
+        <h2 className="team-title">A thoughtful partner for your <em>next digital move.</em></h2>
+        <p className="team-subtitle">Share your idea, challenge, or brief and we can explore the right direction together.</p>
+        <Link to="/contact" className="about-contact-link">Get in touch <ArrowUpRight size={19} /></Link>
       </div>
     </div>
   );

@@ -1,0 +1,85 @@
+/* Light surfaces around the existing dark home hero. */
+html { scroll-behavior: auto; }
+body { background: #fff; color: #122b49; }
+.app { background: #fff; }
+.app::before, .app::after { display: none; }
+.hero-section { color: var(--text-primary); }
+.app-loader { background: radial-gradient(circle at 50% 45%, #e2f2ff, #fff 52%); }
+.loader-brand { color: #315d89; }
+.loading-bar { background: #d5e7f6; }
+.loading-bar span { background: #1265af; }
+:focus-visible { outline: 3px solid #2178c8; outline-offset: 3px; }
+[id] { scroll-margin-top: 110px; }
+
+/* Home page content below the hero. */
+.culture-section { color: #122b49; padding-top: 100px; padding-bottom: 100px; }
+.culture-section::before { background: #dce9f5; }
+.culture-intro .section-title, .culture-copy h3, .section-header { color: #122b49; }
+.culture-intro .culture-desc, .culture-copy p, .feature-desc { color: #50647a; }
+.culture-timeline::before { background: linear-gradient(#fff, #c8e1f7 18%, #c8e1f7 82%, #fff); }
+.culture-moment[data-tone] { --moment-accent: #1265af; }
+.culture-moment::before { border-color: #a8d0ef; background: #fff; box-shadow: none; }
+.culture-copy::before { background: #1265af; }
+.culture-kicker { color: #1265af; }
+.culture-points li { color: #24445f; }
+.culture-points svg { color: #1265af; }
+.culture-art { min-height: 350px; }
+.culture-art::before, .culture-art::after { display: none; }
+.culture-timeline .culture-moment .culture-art img {
+  display: block;
+  width: 100%;
+  height: 350px;
+  max-height: none;
+  object-fit: cover;
+  border-radius: 17px;
+  box-shadow: 0 20px 45px rgba(24, 62, 101, 0.12);
+  filter: none;
+  transform: none;
+}
+.features-section { padding-top: 80px; padding-bottom: 110px; }
+.features-grid { gap: 20px; }
+.feature-card.glass-panel { padding: 38px 30px; border-color: #e2ebf4; background: #f7faff; color: #122b49; box-shadow: none; backdrop-filter: none; }
+.feature-icon-wrapper { width: 58px; height: 58px; margin-bottom: 22px; border-radius: 12px; clip-path: none; background: #e3f1ff; }
+.feature-icon { width: 26px; height: 26px; color: #1265af; stroke-width: 1.7; }
+.feature-title { font-family: 'Space Grotesk', Inter, sans-serif; font-size: 1.3rem; }
+.home-close {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 35px;
+  width: min(calc(100% - 48px), 1220px);
+  margin: 0 auto 95px;
+  padding: clamp(38px, 5vw, 66px);
+  border-radius: 22px;
+  background: #eaf4ff;
+  color: #122b49;
+}
+.home-close .eyebrow { color: #1769b2; }
+.home-close h2 { max-width: 620px; margin: 6px 0 13px; font: 700 clamp(2rem, 4vw, 3.4rem)/1.13 'Space Grotesk', Inter, sans-serif; letter-spacing: -0.04em; }
+.home-close p { color: #50647a; line-height: 1.7; }
+.home-close-link { display: inline-flex; align-items: center; justify-content: center; gap: 9px; flex: 0 0 auto; min-height: 50px; padding: 13px 19px; border-radius: 8px; background: #1265af; color: #fff; font-weight: 700; text-decoration: none; }
+.home-close-link:hover { background: #0c4f90; }
+
+@media (max-width: 900px) {
+  .culture-section { padding-top: 76px; padding-bottom: 70px; }
+  .culture-timeline .culture-moment .culture-art img { height: 320px; }
+  .home-close { flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 600px) {
+  body { font-size: 16px; }
+  .culture-section { padding-top: 62px; padding-bottom: 58px; }
+  .culture-intro { margin-bottom: 44px; }
+  .culture-timeline { gap: 52px; }
+  .culture-art { min-height: 240px; }
+  .culture-timeline .culture-moment .culture-art img { height: 245px; }
+  .culture-copy { padding-left: 16px; }
+  .features-section { padding: 48px 16px 66px; }
+  .features-grid { grid-template-columns: 1fr; gap: 14px; }
+  .feature-card.glass-panel { padding: 29px 24px; }
+  .section-header { font-size: 2rem; margin-bottom: 30px; }
+  .home-close { width: calc(100% - 32px); margin-bottom: 65px; padding: 34px 25px; }
+  .home-close-link { width: 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .project-card, .service-card, .culture-art, .feature-card { animation: none !important; transition: none !important; }
+}
