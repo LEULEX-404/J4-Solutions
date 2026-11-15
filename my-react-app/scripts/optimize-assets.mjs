@@ -1,5 +1,5 @@
 import { createCanvas, loadImage } from '@napi-rs/canvas';
-import { mkdir, stat, writeFile } from 'node:fs/promises';
+import { mkdir, readdir, stat, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
 const assets = [
@@ -26,6 +26,21 @@ for (const asset of assets) {
     const output = await stat(target).catch(() => null);
     if (output && output.mtimeMs >= input.mtimeMs) continue;
     await resize(source, target, width);
+  }
+}
+
+// Keep original pack files intact, and serve smaller derivatives where useful.
+for (const page of ['home', 'services', 'work', 'about', 'contact']) {
+  await mkdir(`public/images/j4/responsive/${page}`, { recursive: true });
+  const scenes = (await readdir(`public/images/j4/${page}`)).filter((name) => /^\d{2}-.*\.webp$/.test(name));
+  for (const scene of scenes) {
+    const source = `public/images/j4/${page}/${scene}`;
+    const input = await stat(source);
+    for (const width of [640, 960]) {
+      const target = `public/images/j4/responsive/${page}/${scene.replace('.webp', '')}-${width}.webp`;
+      const output = await stat(target).catch(() => null);
+      if (!output || output.mtimeMs < input.mtimeMs) await resize(source, target, width);
+    }
   }
 }
 

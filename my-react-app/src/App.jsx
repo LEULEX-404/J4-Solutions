@@ -24,6 +24,8 @@ function RouteScroll() {
       try { targetId = decodeURIComponent(hash.slice(1)); } catch { targetId = hash.slice(1); }
       const target = document.getElementById(targetId);
       if (target) {
+        if (!target.hasAttribute('tabindex')) target.setAttribute('tabindex', '-1');
+        target.focus({ preventScroll: true });
         target.scrollIntoView({ block: 'start', behavior: 'instant' });
         return;
       }

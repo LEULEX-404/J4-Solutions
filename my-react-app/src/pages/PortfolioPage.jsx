@@ -4,6 +4,8 @@ import { ArrowUpRight } from 'lucide-react';
 import './PortfolioPage.css';
 import HeaderArtwork from '../components/HeaderArtwork';
 import SceneImage from '../components/SceneImage';
+import { featuredConcept } from '../featuredConcept';
+import ProjectInvitation from '../components/ProjectInvitation';
 
 const conceptDetails = {
   'Commerce that feels effortless': { scope: 'An example direction for a store that needs clear product discovery, checkout and day-to-day administration.', deliverables: ['Product catalogue and search journeys', 'Cart and payment integration plan', 'Order and inventory administration'] },
@@ -23,7 +25,7 @@ const categories = [
 ];
 
 const concepts = [
-  { title: 'Commerce that feels effortless', category: 'web', description: 'A shopping experience shaped around easy discovery, clear checkout, and practical store management.', image: '/images/j4/work/01-ecommerce-store.webp', alt: 'Premium real workspace photograph with desktop monitor showing polished laptop retail ecommerce storefront', tags: ['Online stores', 'Payments', 'Inventory'] },
+  featuredConcept,
   { title: 'Useful services in your pocket', category: 'mobile', description: 'A mobile product that helps people complete everyday tasks quickly and confidently.', image: '/images/j4/work/02-mobile-service-app.webp', alt: 'Closeup real hand holding smartphone with beautifully clear service booking app interface showing appointment cards and bottom navigation', tags: ['Mobile apps', 'User journeys', 'Notifications'] },
   { title: 'A clearer view of your business', category: 'systems', description: 'One place to understand operations, spot changes, and make informed decisions.', image: '/images/j4/work/03-business-dashboard.webp', alt: 'Real widescreen monitor on tidy business desk displaying clear professional ERP analytics dashboard', tags: ['Dashboards', 'Reporting', 'Integrations'] },
   { title: 'Digital experiences with character', category: 'design', description: 'A distinct visual language paired with simple, accessible paths through the product.', image: '/images/j4/work/04-brand-interface-design.webp', alt: 'Real designer desk with large monitor showing cohesive brand design system of color swatches buttons typography and web/mobile UI artboards', tags: ['Brand systems', 'UI design', 'Prototypes'] },
@@ -65,10 +67,10 @@ const PortfolioPage = () => {
 
       <div className="portfolio-grid">
         {visibleConcepts.map((concept, index) => (
-          <article className="project-card" key={concept.title}>
-            <div className="project-image"><SceneImage src={concept.image} alt={concept.alt} width={1536} height={1024} /><span className="project-index">{String(index + 1).padStart(2, '0')}</span></div>
+          <article className={`project-card${currentCategory === 'all' && concept === featuredConcept ? ' project-card--featured' : ''}`} id={concept === featuredConcept ? 'featured-concept' : undefined} key={concept.title}>
+            <div className="project-image"><SceneImage src={concept.image} alt={concept.alt} width={1536} height={1024} sizes={currentCategory === 'all' && concept === featuredConcept ? '(max-width: 900px) calc(100vw - 40px), 700px' : undefined} /><span className="project-index">{String(index + 1).padStart(2, '0')}</span></div>
             <div className="project-content">
-              <span className="project-category">{categories.find((category) => category.id === concept.category)?.label}</span>
+              <span className="project-category">{currentCategory === 'all' && concept === featuredConcept ? 'Featured concept / ' : ''}{categories.find((category) => category.id === concept.category)?.label}</span>
               <h2 className="project-title">{concept.title}</h2>
               <p className="project-description">{concept.description}</p>
               <details className="project-details"><summary>Explore the proposed scope</summary><p>{conceptDetails[concept.title].scope}</p><h3>Possible deliverables</h3><ul>{conceptDetails[concept.title].deliverables.map((item) => <li key={item}>{item}</li>)}</ul><span className="project-concept-label">Illustrative concept / Scope agreed per project</span></details>
@@ -80,6 +82,7 @@ const PortfolioPage = () => {
           </article>
         ))}
       </div>
+      <ProjectInvitation className="work-close" title={<>Have something <em>similar in mind?</em></>} description="Bring your business challenge or an early idea. We can explore a useful direction together." subject="Let's explore a project direction" />
     </div>
   );
 };

@@ -7,6 +7,16 @@ import { sitePages, normalizePath } from '../src/siteMetadata.js';
 
 const types = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json', '.xml': 'application/xml; charset=utf-8', '.txt': 'text/plain; charset=utf-8', '.png': 'image/png', '.webp': 'image/webp', '.jpg': 'image/jpeg', '.svg': 'image/svg+xml', '.ico': 'image/x-icon', '.mp4': 'video/mp4', '.woff2': 'font/woff2' };
 
+function acceptedEncodings(header = '') {
+  const preferences = new Map(header.toLowerCase().split(',').map((part) => {
+    const [name, ...parameters] = part.trim().split(';');
+    const quality = parameters.find((parameter) => parameter.trim().startsWith('q='));
+    const value = quality ? Number(quality.trim().slice(2)) : 1;
+    return [name, Number.isFinite(value) && value >= 0 && value <= 1 ? value : 0];
+  }));
+  return ['br', 'gzip'].map((name) => ({ name, quality: preferences.get(name) ?? preferences.get('*') ?? 0 })).filter((item) => item.quality > 0).sort((a, b) => b.quality - a.quality);
+}
+
 export function createStaticServer({ root = path.resolve('dist') } = {}) {
   const directory = path.resolve(root);
   return createServer(async (request, response) => {
@@ -39,6 +49,20 @@ export function createStaticServer({ root = path.resolve('dist') } = {}) {
         'Cache-Control': extension === '.html' ? 'no-cache' : pathname.startsWith('/assets/') ? 'public, max-age=31536000, immutable' : 'public, max-age=3600',
         'Accept-Ranges': 'bytes',
       };
+      if (/\.(html|css|js|json|xml|txt|svg)$/.test(file)) {
+        headers.Vary = 'Accept-Encoding';
+        if (!request.headers.range) {
+          for (const { name } of acceptedEncodings(request.headers['accept-encoding'])) {
+            const encodedFile = `${file}.${name === 'br' ? 'br' : 'gz'}`;
+            const encodedInfo = await stat(encodedFile).catch(() => null);
+            if (!encodedInfo?.isFile()) continue;
+            file = encodedFile;
+            info = encodedInfo;
+            headers['Content-Encoding'] = name;
+            break;
+          }
+        }
+      }
       let start = 0;
       let end = info.size - 1;
       if (request.headers.range && status === 200) {

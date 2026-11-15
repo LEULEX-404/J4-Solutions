@@ -10,7 +10,7 @@ From this directory, run `npm ci` and `npm run dev`. The predev step prepares re
 
 ## Production
 
-Run `npm run build`, then `npm start`. The Node server serves `dist`, page-specific HTML metadata, genuine HTTP 404 responses, static assets with caching, and byte-range video requests. Set `PORT` and optionally `HOST` for the hosting environment. Production serving uses only Node built-ins.
+Run `npm run build`, then `npm start`. The Node server serves `dist`, page-specific HTML metadata, genuine HTTP 404 responses, cached static assets, prebuilt Brotli/gzip text responses and byte-range video requests. Set `PORT` and optionally `HOST` for the hosting environment. Production serving uses only Node built-ins.
 
 For a static host, upload `dist`, serve generated directory indexes for the five known routes, and configure missing pages to serve `404.html` with HTTP 404. Avoid a blanket rewrite of every URL to Home, which masks missing assets and invalid addresses. The Vite development server is not the production 404 implementation.
 
@@ -26,6 +26,8 @@ Work entries remain labelled illustrative directions, with proposed scopes and p
 
 ## Assets and validation limits
 
-`npm run prepare:assets` derives 480px, 768px and 1280px WebP artwork from the original transparent PNGs, preserving alpha. Original PNGs remain in source and are excluded from production output. The supplied 22 scene images remain unchanged. Header and content images have themed error fallbacks.
+`npm run prepare:assets` derives 480px, 768px and 1280px WebP artwork from the original transparent PNGs, preserving alpha. Original PNGs remain in source and are excluded from production output. The supplied 22 scene images remain unchanged, with additional 640px and 960px responsive derivatives. Header and content images have themed error fallbacks.
+
+Home entrances and reveals use CSS and a shared native observer. The ambient video pauses offscreen/in hidden tabs and uses its poster for reduced motion or Save-Data. The UI and resource-size comparison are documented in `docs/ui-polish-and-performance.md`. Tests enforce improved compressed JS/CSS budgets and check production encoding negotiation.
 
 Automated checks cover loader ordering, responsive images and alpha, image errors, keyboard menu behavior, metadata, contact drafts, filtering, inquiry state, 404s and HTTP video ranges. They run in JSDOM and Node. Real-device appearance, browser performance scores and actual social-share crawlers remain unverified because no browser connection or public URL is available.

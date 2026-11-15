@@ -24,7 +24,7 @@ const AboutPage = () => {
   ];
 
   return (
-    <div className="about-page">
+    <div className="about-page studio-about">
       <div className="about-hero">
         <div className="about-hero-content">
           <span className="editorial-eyebrow">03 / Our studio</span>
@@ -33,16 +33,18 @@ const AboutPage = () => {
           <p className="about-description">
             Based in Kaduwela, Sri Lanka, J4 Solutions brings strategy, design, and engineering together to create digital products shaped around real needs.
           </p>
+          <div className="about-signature"><span aria-hidden="true" />Independent thinking.<br />Connected delivery.</div>
         </div>
-        <div className="about-hero-visual">
+        <figure className="about-hero-visual">
           <SceneImage src="/images/j4/about/01-studio-exterior.webp" alt="Illustrative modern small software studio office entrance in Sri Lanka" width={1536} height={1024} loading="eager" />
-        </div>
+          <figcaption className="about-visual-caption"><span>Space for thoughtful work.</span><span>Illustrative studio setting</span></figcaption>
+        </figure>
       </div>
 
       <div className="about-story">
         <div className="story-container">
           <div className="story-content">
-            <span className="editorial-eyebrow">The story</span>
+            <span className="editorial-eyebrow">01 / The story</span>
             <h2 className="story-title">Curious minds. <em>Clear purpose.</em></h2>
             <div className="story-text">
               <p>
@@ -63,37 +65,39 @@ const AboutPage = () => {
             <div className="visual-card card-secondary">
               <SceneImage src="/images/j4/about/03-engineering-team.webp" alt="Three South Asian software engineers focused on pair programming and testing at shared desk" width={1536} height={1024} />
             </div>
+            <p className="story-image-note">Illustrative<br />collaboration scenes</p>
           </div>
         </div>
       </div>
 
-      <div className="about-values">
-        <span className="editorial-eyebrow">What guides us</span>
-        <h2 className="values-title">The way we <em>work together.</em></h2>
+      <section className="about-values" aria-labelledby="about-values-title">
+        <div className="values-heading"><div><span className="editorial-eyebrow">02 / What guides us</span><h2 className="values-title" id="about-values-title">The way we <em>work together.</em></h2></div><p>Clear goals. Open decisions. A product that stays useful.</p></div>
         <div className="values-grid">
           {values.map((value, index) => {
             const ValueIcon = value.icon;
             return (
-              <div 
+              <article
                 key={index} 
                 className="value-card"
-                style={{ '--value-index': index }}
               >
+                <span className="value-number" aria-hidden="true">0{index + 1}</span>
                 <div className="value-icon-wrapper">
-                  <ValueIcon className="value-icon" size={32} />
+                  <ValueIcon className="value-icon" size={25} strokeWidth={1.5} aria-hidden="true" />
                 </div>
                 <h3 className="value-title">{value.title}</h3>
                 <p className="value-description">{value.description}</p>
-              </div>
+              </article>
             );
           })}
         </div>
-      </div>
+      </section>
 
       <div className="about-team">
-        <span className="eyebrow">Let us talk</span>
-        <h2 className="team-title">A thoughtful partner for your <em>next digital move.</em></h2>
-        <p className="team-subtitle">Share your idea, challenge, or brief and we can explore the right direction together.</p>
+        <div className="about-team-copy">
+          <span className="eyebrow">Let us talk</span>
+          <h2 className="team-title">A thoughtful partner for your <em>next digital move.</em></h2>
+          <p className="team-subtitle">Share your idea, challenge, or brief and we can explore the right direction together.</p>
+        </div>
         <Link to="/contact" className="about-contact-link">Get in touch <ArrowUpRight size={19} /></Link>
       </div>
     </div>

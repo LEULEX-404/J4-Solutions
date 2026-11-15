@@ -1,5 +1,7 @@
 # Website quality improvements
 
+Subsequent Home and site-wide styling changes, native motion, responsive scene derivatives and delivery compression are documented in `ui-polish-and-performance.md`.
+
 - Contact keeps the requested email-app flow, with draft feedback, whitespace validation, autocomplete, copy/manual-copy and WhatsApp alternatives. No email backend was added, and no message was sent during testing.
 - Header artwork uses responsive transparent WebP files. At 1280px, the three files total 406,342 bytes instead of 5,416,455 bytes (about 92.5% smaller). The 480px mobile variants range from 31,516 to 42,158 bytes. The nav logo uses 5,328/14,790-byte files instead of the original 1,949,192-byte PNG. The original hero video uses metadata preload; its 4.75 MB file has not been re-encoded.
 - Each page has a distinct title, description and social metadata in generated HTML and client navigation. A social preview and small favicon are included. Domain-specific canonical URLs, absolute static social URLs and sitemap generation need the real public origin in `VITE_SITE_URL` before deployment.
@@ -8,6 +10,6 @@
 - Unknown pages render a 404 with useful navigation and noindex metadata. The production server returns HTTP 404 for unknown pages and missing assets, supports deep links and byte-range video playback, and prevents path traversal. Static hosts must use the documented 404 handling.
 - Header and scene images have themed error fallbacks. Keyboard improvements include a skip link, route focus, first-link focus on menu opening, Escape focus restoration and closing when focus leaves the menu or the viewport expands. Mobile form controls use 16px text to avoid input zoom.
 
-The generated social preview and original/optimized header artwork on the site's light background were visually inspected. `npm run check` passes ESLint, the production build and all 15 tests. These cover behavior, but JSDOM does not verify layout, touch interaction, CSS animation rendering, real network performance or real-device accessibility. No connected browser or real phone was available, so those checks are not reported as passed.
+The generated social preview and original/optimized header artwork on the site's light background were visually inspected. The original quality pass had 15 automated tests; the current `npm run check` includes 22 checks. These cover behavior, but JSDOM does not verify layout, touch interaction, CSS animation rendering, real network performance or real-device accessibility. No connected browser or real phone was available, so those checks are not reported as passed.
 
 Implementation references: [image performance](https://web.dev/learn/performance/image-performance), [Google page titles](https://developers.google.com/search/docs/appearance/title-link), [Google snippets](https://developers.google.com/search/docs/appearance/snippet), and [WAI navigation guidance](https://www.w3.org/WAI/tutorials/menus/).

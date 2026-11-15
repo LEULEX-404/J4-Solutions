@@ -1,5 +1,5 @@
 import React from 'react';
-import { Code2, Smartphone, Globe, Database, Cloud, Palette, Lock, Cpu } from 'lucide-react';
+import { ArrowUpRight, Check, Code2, Smartphone, Globe, Database, Cloud, Palette, Lock, Cpu } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import './ServicesPage.css';
 import HeaderArtwork from '../components/HeaderArtwork';
@@ -23,6 +23,7 @@ const ServicesPage = () => {
     {
       icon: Code2,
       title: "Web Development",
+      category: 'Web & platforms',
       description: "Custom websites and web applications built with modern technologies and best practices.",
       features: ["Responsive Design", "SEO Optimized", "Fast Performance"],
       image: '/images/j4/services/01-web-development.webp',
@@ -31,6 +32,7 @@ const ServicesPage = () => {
     {
       icon: Smartphone,
       title: "Mobile App Development",
+      category: 'Mobile experiences',
       description: "Native and cross-platform mobile applications for iOS and Android devices.",
       features: ["Cross-Platform", "Native Performance", "App Store Ready"],
       image: '/images/j4/services/02-mobile-app-development.webp',
@@ -39,6 +41,7 @@ const ServicesPage = () => {
     {
       icon: Database,
       title: "Database Solutions",
+      category: 'Data & infrastructure',
       description: "Robust database design, optimization, and management for your applications.",
       features: ["Scalable Architecture", "Data Security", "Performance Tuning"],
       image: '/images/j4/services/03-database-solutions.webp',
@@ -47,6 +50,7 @@ const ServicesPage = () => {
     {
       icon: Cloud,
       title: "Cloud Services",
+      category: 'Cloud & delivery',
       description: "Cloud infrastructure setup, migration, and management on AWS, Azure, or Google Cloud.",
       features: ["Cloud Migration", "Auto Scaling", "Cost Optimization"],
       image: '/images/j4/services/04-cloud-services.webp',
@@ -55,6 +59,7 @@ const ServicesPage = () => {
     {
       icon: Palette,
       title: "UI/UX Design",
+      category: 'Design & experience',
       description: "Beautiful, intuitive interfaces that provide exceptional user experiences.",
       features: ["User Research", "Prototyping", "Usability Testing"],
       image: '/images/j4/services/05-ui-ux-design.webp',
@@ -63,6 +68,7 @@ const ServicesPage = () => {
     {
       icon: Lock,
       title: "Security Solutions",
+      category: 'Security & reliability',
       description: "Comprehensive security audits, implementation, and ongoing protection.",
       features: ["Security Audits", "Penetration Testing", "Compliance"],
       image: '/images/j4/services/06-security-solutions.webp',
@@ -71,6 +77,7 @@ const ServicesPage = () => {
     {
       icon: Cpu,
       title: "AI & Machine Learning",
+      category: 'Intelligence & automation',
       description: "Intelligent solutions powered by artificial intelligence and machine learning.",
       features: ["Predictive Analytics", "Automation", "Data Insights"],
       image: '/images/j4/services/07-ai-machine-learning.webp',
@@ -79,6 +86,7 @@ const ServicesPage = () => {
     {
       icon: Globe,
       title: "Digital Transformation",
+      category: 'Business & operations',
       description: "Complete digital transformation services to modernize your business operations.",
       features: ["Process Automation", "Legacy Modernization", "Integration"],
       image: '/images/j4/services/08-digital-transformation.webp',
@@ -87,7 +95,7 @@ const ServicesPage = () => {
   ];
 
   return (
-    <div className="services-page">
+    <div className="services-page services-premium">
       <div className="services-header services-header--with-visual">
         <div className="services-header-copy">
           <span className="editorial-eyebrow">01 / What we do</span>
@@ -104,30 +112,28 @@ const ServicesPage = () => {
           {services.map((service, index) => {
             const ServiceIcon = service.icon;
             return (
-              <div 
+              <article
                 key={index} 
+                id={`service-${index + 1}`}
                 className="service-card"
-                style={{ '--service-index': index }}
               >
                 <div className="service-media">
                   <SceneImage src={service.image} alt={service.imageAlt} width={1536} height={1024} loading={index === 0 ? 'eager' : 'lazy'} />
                   <span className="service-index">{String(index + 1).padStart(2, '0')}</span>
                 </div>
-                <div className="service-icon-container">
-                  <ServiceIcon className="service-icon" size={28} strokeWidth={1.7} />
+                <div className="service-body">
+                  <div className="service-heading-row">
+                    <div className="service-icon-container"><ServiceIcon className="service-icon" size={25} strokeWidth={1.5} aria-hidden="true" /></div>
+                    <span className="service-category">{service.category}</span>
+                  </div>
+                  <h2 className="service-title">{service.title}</h2>
+                  <p className="service-description">{service.description}</p>
+                  <ul className="service-features">
+                    {service.features.map((feature) => <li key={feature} className="service-feature-item"><Check size={13} strokeWidth={1.8} aria-hidden="true" />{feature}</li>)}
+                  </ul>
+                  <Link className="service-btn" to="/contact" state={{ subject: `Inquiry about ${service.title}` }}>Discuss this service<span className="service-link-arrow" aria-hidden="true"><ArrowUpRight size={18} strokeWidth={1.5} /></span></Link>
                 </div>
-                <h3 className="service-title">{service.title}</h3>
-                <p className="service-description">{service.description}</p>
-                <ul className="service-features">
-                  {service.features.map((feature, idx) => (
-                    <li key={idx} className="service-feature-item">
-                      <span className="feature-bullet"></span>
-                      {feature}
-                    </li>
-                  ))}
-                </ul>
-                <Link className="service-btn" to="/contact" state={{ subject: `Inquiry about ${service.title}` }}>Discuss this service</Link>
-              </div>
+              </article>
             );
           })}
         </div>

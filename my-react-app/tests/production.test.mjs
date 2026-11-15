@@ -1,6 +1,7 @@
 import assert from 'node:assert/strict';
 import { test } from 'node:test';
-import { readFile, stat, access, mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
+import { readFile, readdir, stat, access, mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
+import { gzipSync } from 'node:zlib';
 import path from 'node:path';
 import { tmpdir } from 'node:os';
 import { execFile } from 'node:child_process';
@@ -41,6 +42,34 @@ test('responsive artwork keeps transparency while substantially reducing file si
   }
 });
 
+test('all 22 original scenes have smaller responsive derivatives without replacing the originals', async () => {
+  let count = 0;
+  for (const page of ['home', 'services', 'work', 'about', 'contact']) {
+    for (const name of (await readdir(`public/images/j4/${page}`)).filter((name) => /^\d{2}-.*\.webp$/.test(name))) {
+      const original = await stat(`public/images/j4/${page}/${name}`);
+      for (const width of [640, 960]) {
+        const file = `dist/images/j4/responsive/${page}/${name.replace('.webp', '')}-${width}.webp`;
+        const image = await loadImage(file);
+        assert.equal(image.width, width);
+        assert.ok((await stat(file)).size < original.size);
+      }
+      count++;
+    }
+  }
+  assert.equal(count, 22);
+});
+
+test('production stays inside the improved JavaScript, CSS and font-request budgets', async () => {
+  const files = await readdir('dist/assets');
+  const compressedSize = async (extension) => (await Promise.all(files.filter((name) => name.endsWith(extension)).map(async (name) => gzipSync(await readFile(`dist/assets/${name}`)).length))).reduce((sum, value) => sum + value, 0);
+  assert.ok(await compressedSize('.js') < 105000, 'Keep JavaScript well below the previous 133 KB gzip baseline');
+  assert.ok(await compressedSize('.css') < 16202, 'Keep CSS below its previous gzip baseline');
+  const html = await readFile('dist/index.html', 'utf8');
+  assert.equal((html.match(/fonts.googleapis.com\/css2/g) || []).length, 1);
+  const css = await Promise.all(files.filter((name) => name.endsWith('.css')).map((name) => readFile(`dist/assets/${name}`, 'utf8')));
+  assert.ok(css.every((value) => !value.includes('@import')));
+});
+
 test('built pages expose distinct titles and social metadata without JavaScript', async () => {
   const titles = new Set();
   for (const [route, metadata] of Object.entries(sitePages)) {
@@ -78,6 +107,16 @@ test('production server supports deep links, genuine 404s, asset MIME types and 
     assert.ok(partial.headers.get('content-range').startsWith('bytes 0-99/'));
     const invalidRange = await fetch(origin + video, { headers: { Range: 'bytes=999999999-' } }); assert.equal(invalidRange.status, 416);
     const head = await fetch(origin + '/contact', { method: 'HEAD' }); assert.equal(head.status, 200); assert.equal(await head.text(), '');
+    const brotli = await fetch(origin + jsUrl, { headers: { 'Accept-Encoding': 'br' } });
+    assert.equal(brotli.headers.get('content-encoding'), 'br');
+    assert.equal(brotli.headers.get('vary'), 'Accept-Encoding');
+    assert.equal(await brotli.text(), javascript);
+    const gzip = await fetch(origin + '/contact', { headers: { 'Accept-Encoding': 'br;q=0,gzip' } });
+    assert.equal(gzip.headers.get('content-encoding'), 'gzip');
+    assert.ok((await gzip.text()).includes('Contact J4 Solutions'));
+    const identity = await fetch(origin + '/contact', { headers: { 'Accept-Encoding': 'br;q=0,gzip;q=0,identity' } });
+    assert.equal(identity.headers.get('content-encoding'), null);
+    assert.ok((await identity.text()).includes('Contact J4 Solutions'));
   } finally { await new Promise((resolve, reject) => server.close((error) => error ? reject(error) : resolve())); }
 });
 
