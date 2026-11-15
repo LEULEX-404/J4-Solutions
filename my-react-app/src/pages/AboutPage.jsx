@@ -2,9 +2,7 @@ import React from 'react';
 import { Target, Users, Shield, ArrowUpRight } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import './AboutPage.css';
-import workshopImg from '../assets/photos/team-workshop.jpg';
-import colomboImg from '../assets/photos/colombo-skyline.jpg';
-import collaborationImg from '../assets/photos/business-meeting.jpg';
+import SceneImage from '../components/SceneImage';
 
 const AboutPage = () => {
   const values = [
@@ -36,8 +34,8 @@ const AboutPage = () => {
             Based in Kaduwela, Sri Lanka, J4 Solutions brings strategy, design, and engineering together to create digital products shaped around real needs.
           </p>
         </div>
-        <div className="about-hero-visual" aria-hidden="true">
-          <img src={colomboImg} alt="Colombo city skyline in Sri Lanka" />
+        <div className="about-hero-visual">
+          <SceneImage src="/images/j4/about/01-studio-exterior.webp" alt="Illustrative modern small software studio office entrance in Sri Lanka" width={1536} height={1024} loading="eager" />
         </div>
       </div>
 
@@ -60,10 +58,10 @@ const AboutPage = () => {
           </div>
           <div className="story-visual">
             <div className="visual-card card-primary">
-              <img src={workshopImg} alt="Collaborative planning session" />
+              <SceneImage src="/images/j4/about/02-planning-together.webp" alt="Candid diverse South Asian software team planning around round table with notebooks wireframes and laptops" width={1536} height={1024} />
             </div>
             <div className="visual-card card-secondary">
-              <img src={collaborationImg} alt="People working together at computers" />
+              <SceneImage src="/images/j4/about/03-engineering-team.webp" alt="Three South Asian software engineers focused on pair programming and testing at shared desk" width={1536} height={1024} />
             </div>
           </div>
         </div>

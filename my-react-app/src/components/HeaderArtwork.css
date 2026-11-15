@@ -1,0 +1,31 @@
+.header-artwork { pointer-events: none; }
+.header-artwork-entry { width: 100%; }
+.header-artwork img { display: block; width: 100%; height: auto; object-fit: contain; }
+.header-artwork-fallback { display: flex; aspect-ratio: 1.5; flex-direction: column; align-items: center; justify-content: center; gap: 24px; border: 1px solid #c5d9e8; background: linear-gradient(135deg, #edf5fb, #fff); color: #1769ad; }
+.header-artwork-fallback span { font-size: .7rem; letter-spacing: .14em; text-transform: uppercase; }
+
+/* Separate layers let the entrance settle before the gentle idle motion. */
+@media (prefers-reduced-motion: no-preference) {
+  .header-artwork:not(.is-loaded) .header-artwork-entry { opacity: 0; }
+  .header-artwork.is-loaded .header-artwork-entry {
+    animation: header-artwork-enter 850ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .header-artwork.is-loaded img {
+    transform-origin: 50% 60%;
+    animation: header-artwork-float 7s ease-in-out 850ms infinite;
+  }
+}
+
+@keyframes header-artwork-enter {
+  from { opacity: 0; transform: translate3d(28px, 10px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+@keyframes header-artwork-float {
+  0%, 100% { transform: translate3d(0, 0, 0) rotate(0deg); }
+  50% { transform: translate3d(0, var(--artwork-float-distance, -7px), 0) rotate(-0.35deg); }
+}
+
+@media (max-width: 650px) {
+  .header-artwork { --artwork-float-distance: -4px; }
+}

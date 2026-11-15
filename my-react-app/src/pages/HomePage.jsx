@@ -1,16 +1,14 @@
 import React, { useState } from 'react';
 // eslint-disable-next-line no-unused-vars
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ArrowRight, ArrowUpRight, Globe, Zap, Shield, TrendingUp, Users } from 'lucide-react';
 import './HomePage.css';
-import heroPosterLogo from '../assets/logo.png';
+import SceneImage from '../components/SceneImage';
+
+const heroPosterLogo = '/images/brand/logo-768.webp';
 
 const introVideoUrl = new URL('../assets/Intro video.mp4', import.meta.url).href;
-import workshopImg from '../assets/photos/team-workshop.jpg';
-import collaborationImg from '../assets/photos/team-collaboration.jpg';
-import developerImg from '../assets/photos/developer-work.jpg';
-import analyticsImg from '../assets/photos/analytics.jpg';
 
 const fadeIn = {
   hidden: { opacity: 0, y: 30 },
@@ -26,6 +24,7 @@ const staggerContainer = {
 };
 
 const HomePage = () => {
+  const shouldReduceMotion = useReducedMotion();
   const [isHeroVideoReady, setIsHeroVideoReady] = useState(false);
   const [hasHeroVideoError, setHasHeroVideoError] = useState(false);
 
@@ -34,8 +33,8 @@ const HomePage = () => {
       kicker: '01 / Intent',
       title: 'Start with the real business problem.',
       description: 'Before design or code, we map the goal, users, constraints, and the fastest path to a useful first release.',
-      image: workshopImg,
-      imageAlt: 'People mapping ideas together in a workshop',
+      image: '/images/j4/home/01-intent-discovery-workshop.webp',
+      imageAlt: 'Candid South Asian software product discovery workshop',
       tone: 'cyan',
       points: [
         { icon: Users, text: 'Stakeholder alignment' },
@@ -46,8 +45,8 @@ const HomePage = () => {
       kicker: '02 / Craft',
       title: 'Design and engineering move together.',
       description: 'Interfaces, data models, and integrations are shaped in one loop, so the product feels polished without slowing delivery.',
-      image: collaborationImg,
-      imageAlt: 'People collaborating around laptops',
+      image: '/images/j4/home/02-craft-design-engineering.webp',
+      imageAlt: 'Two South Asian product designer and developer collaborating at dual monitors',
       tone: 'violet',
       points: [
         { icon: Zap, text: 'Rapid working prototypes' },
@@ -58,8 +57,8 @@ const HomePage = () => {
       kicker: '03 / Scale',
       title: 'Launch clean, then grow with control.',
       description: 'We keep the system practical after launch with maintainable architecture, thoughtful automation, and room for expansion.',
-      image: developerImg,
-      imageAlt: 'Software development work on a laptop',
+      image: '/images/j4/home/03-scale-cloud-delivery.webp',
+      imageAlt: 'DevOps engineer at professional workstation monitoring cloud deployment pipelines and system performance graphs',
       tone: 'green',
       points: [
         { icon: Globe, text: 'Cloud-ready delivery' },
@@ -70,8 +69,8 @@ const HomePage = () => {
       kicker: '04 / Intelligence',
       title: 'Use AI where it earns its place.',
       description: 'We add automation and intelligence only when it improves the workflow, protects time, or reveals decisions faster.',
-      image: analyticsImg,
-      imageAlt: 'Analytics dashboard displayed on a laptop',
+      image: '/images/j4/home/04-intelligence-ai-automation.webp',
+      imageAlt: 'Business analyst and software engineer inspecting an automated document processing workflow on desktop screen',
       tone: 'amber',
       points: [
         { icon: Zap, text: 'Useful automation' },
@@ -100,17 +99,17 @@ const HomePage = () => {
         >
           <div className="hero-video-poster">
             <div className="hero-poster-orbit" />
-            <img src={heroPosterLogo} alt="" />
+            <img src={heroPosterLogo} srcSet="/images/brand/logo-384.webp 384w, /images/brand/logo-768.webp 768w" sizes="(max-width: 650px) 80vw, 600px" alt="" width={768} height={512} />
           </div>
           <video
             className="hero-video"
             src={introVideoUrl}
             poster={heroPosterLogo}
-            autoPlay
+            autoPlay={!shouldReduceMotion}
             muted
             loop
             playsInline
-            preload="auto"
+            preload="metadata"
             onLoadedData={() => setIsHeroVideoReady(true)}
             onError={() => setHasHeroVideoError(true)}
           />
@@ -229,7 +228,7 @@ const HomePage = () => {
                   whileHover={{ y: -8, scale: 1.015 }}
                   transition={{ duration: 0.35 }}
                 >
-                  <img src={moment.image} alt={moment.imageAlt} />
+                  <SceneImage src={moment.image} alt={moment.imageAlt} width={1536} height={1024} />
                 </motion.div>
               </motion.article>
             );

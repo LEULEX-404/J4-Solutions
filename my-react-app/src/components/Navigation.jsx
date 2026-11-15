@@ -1,7 +1,6 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { NavLink, Link, useLocation } from 'react-router-dom';
 import { ArrowUpRight, Briefcase, FolderOpen, Home, Mail, Menu, Users, X } from 'lucide-react';
-import logo from '../assets/logo.png';
 import './Navigation.css';
 
 const navItems = [
@@ -17,6 +16,8 @@ const Navigation = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isPastHero, setIsPastHero] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const menuRef = useRef(null);
+  const toggleRef = useRef(null);
 
   useLayoutEffect(() => {
     const handleScroll = () => {
@@ -35,11 +36,22 @@ const Navigation = () => {
 
   useEffect(() => {
     if (!isMobileMenuOpen) return undefined;
+    menuRef.current?.querySelector('a')?.focus();
     const closeOnEscape = (event) => {
-      if (event.key === 'Escape') setIsMobileMenuOpen(false);
+      if (event.key === 'Escape') { setIsMobileMenuOpen(false); toggleRef.current?.focus(); }
     };
+    const closeOutsideFocus = (event) => {
+      if (!menuRef.current?.contains(event.target) && event.target !== toggleRef.current) setIsMobileMenuOpen(false);
+    };
+    const closeOnResize = () => { if (window.innerWidth > 900) setIsMobileMenuOpen(false); };
     window.addEventListener('keydown', closeOnEscape);
-    return () => window.removeEventListener('keydown', closeOnEscape);
+    document.addEventListener('focusin', closeOutsideFocus);
+    window.addEventListener('resize', closeOnResize);
+    return () => {
+      window.removeEventListener('keydown', closeOnEscape);
+      document.removeEventListener('focusin', closeOutsideFocus);
+      window.removeEventListener('resize', closeOnResize);
+    };
   }, [isMobileMenuOpen]);
 
   useEffect(() => {
@@ -59,7 +71,7 @@ const Navigation = () => {
         <div className="nav-frame">
           <Link to="/" className="nav-identity" onClick={handleNavClick} aria-label="J4 Solutions home">
             <span className="brand-mark">
-              <img src={logo} alt="" />
+              <img src="/images/brand/logo-192.webp" srcSet="/images/brand/logo-96.webp 96w, /images/brand/logo-192.webp 192w" sizes="96px" alt="" width={192} height={128} />
             </span>
             <span className="brand-lockup">
               <strong>J4 Solutions</strong>
@@ -68,7 +80,7 @@ const Navigation = () => {
           </Link>
 
           <div className="nav-directory">
-            <div id="primary-nav-links" className={`nav-menu ${isMobileMenuOpen ? 'open' : ''}`}>
+            <div ref={menuRef} id="primary-nav-links" className={`nav-menu ${isMobileMenuOpen ? 'open' : ''}`}>
               <div className="mobile-menu-head">
                 <span>Navigate</span>
                 <span>J4 / Studio</span>
@@ -101,6 +113,7 @@ const Navigation = () => {
               Let's talk <ArrowUpRight size={17} />
             </Link>
             <button
+              ref={toggleRef}
               type="button"
               className="mobile-menu-toggle"
               onClick={() => setIsMobileMenuOpen((open) => !open)}

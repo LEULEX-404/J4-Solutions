@@ -1,0 +1,8 @@
+.not-found-page { width: min(100%, 1000px); min-height: 75vh; margin-inline: auto; padding: clamp(150px, 16vw, 220px) 24px 100px; color: #10283f; }
+.not-found-page h1 { max-width: 850px; margin: 24px 0; font: 500 clamp(2.8rem, 6vw, 5.8rem)/1.1 var(--editorial-serif, Georgia, serif); letter-spacing: -.04em; }
+.not-found-page h1 em { color: #1769ad; }
+.not-found-page p { max-width: 550px; color: #566b7b; line-height: 1.8; }
+.not-found-actions { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 34px; }
+.not-found-actions a { display: flex; align-items: center; gap: 10px; min-height: 48px; padding: 12px 18px; border: 1px solid #c5d9e8; color: #1769ad; text-decoration: none; }
+.not-found-actions a:first-child { border-color: #1769ad; background: #1769ad; color: #fff; }
+.not-found-actions a:hover { border-color: #1769ad; }

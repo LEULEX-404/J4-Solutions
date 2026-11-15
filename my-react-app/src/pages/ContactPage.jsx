@@ -3,7 +3,9 @@ import { useLocation } from 'react-router-dom';
 import { Mail, Phone, MapPin, Send, Facebook, Linkedin, MessageCircle } from 'lucide-react';
 import './ContactPage.css';
 import { contactDetails } from '../contactDetails';
-import contactVisualImg from '../assets/photos/colombo-skyline.jpg';
+import HeaderArtwork from '../components/HeaderArtwork';
+import SceneImage from '../components/SceneImage';
+import { contactDraftText, contactDraftUrl } from '../contactDraft';
 
 const socialLinks = [
   { icon: Facebook, label: 'Facebook', href: contactDetails.facebookUrl },
@@ -13,6 +15,7 @@ const socialLinks = [
 
 const ContactPage = () => {
   const location = useLocation();
+  const [draftStatus, setDraftStatus] = useState('idle');
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -42,6 +45,7 @@ const ContactPage = () => {
   ];
 
   const handleChange = (e) => {
+    setDraftStatus('idle');
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
@@ -50,19 +54,43 @@ const ContactPage = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const subject = encodeURIComponent(formData.subject);
-    const body = encodeURIComponent(`${formData.message}\n\nFrom: ${formData.name}\nReply to: ${formData.email}`);
-    window.location.href = `mailto:${contactDetails.email}?subject=${subject}&body=${body}`;
+    if (Object.values(formData).some((value) => !value.trim())) {
+      setDraftStatus('invalid');
+      return;
+    }
+    setDraftStatus('prepared');
+    try { window.location.href = contactDraftUrl(formData); }
+    catch { setDraftStatus('open-error'); }
+  };
+
+  const copyDraft = async () => {
+    if (!formData.message.trim()) { setDraftStatus('invalid'); return; }
+    try {
+      if (!navigator.clipboard?.writeText) throw new Error('Clipboard unavailable');
+      await navigator.clipboard.writeText(contactDraftText(formData));
+      setDraftStatus('copied');
+    } catch { setDraftStatus('copy-error'); }
+  };
+
+  const feedback = {
+    prepared: 'Your draft is ready. If your email app did not open, copy the message or continue on WhatsApp. Send the email from your email app to complete your inquiry.',
+    copied: 'Message copied. Paste it into your email app or WhatsApp when you are ready to send.',
+    'copy-error': 'Automatic copying is unavailable. Select and copy your message below, then paste it into your email app.',
+    'open-error': 'Your email app could not be opened. You can copy your message or contact us on WhatsApp instead.',
+    invalid: 'Please enter your name, email, subject and a message before preparing the draft.',
   };
 
   return (
     <div className="contact-page">
-      <div className="contact-header">
-        <span className="editorial-eyebrow">04 / Start a conversation</span>
-        <h1 className="contact-title">Let's make <em>something matter.</em></h1>
-        <p className="contact-subtitle">
-          Have a project in mind? Let's discuss how we can help bring your vision to life
-        </p>
+      <div className="contact-header contact-header--with-visual">
+        <div className="contact-header-copy">
+          <span className="editorial-eyebrow">04 / Start a conversation</span>
+          <h1 className="contact-title">Let's make <em>something matter.</em></h1>
+          <p className="contact-subtitle">
+            Have a project in mind? Let's discuss how we can help bring your vision to life
+          </p>
+        </div>
+        <HeaderArtwork className="contact-header-art" src="/images/j4/contact/communication-workspace.webp" />
       </div>
 
       <div className="contact-container">
@@ -71,8 +99,8 @@ const ContactPage = () => {
           <p className="info-description">
             Share an idea, ask a question, or tell us what needs to work better. We would love to hear from you.
           </p>
-          <div className="contact-visual" aria-hidden="true">
-            <img src={contactVisualImg} alt="Colombo skyline in Sri Lanka" />
+          <div className="contact-visual">
+            <SceneImage src="/images/j4/contact/01-welcoming-workspace.webp" alt="Welcoming software consultancy meeting space in modern Sri Lankan office" width={1536} height={1024} loading="eager" />
           </div>
           
           <div className="contact-info-cards">
@@ -118,7 +146,7 @@ const ContactPage = () => {
 
         <div className="contact-form-section">
             <form className="contact-form" onSubmit={handleSubmit}>
-              <h2 className="form-title">Send Us a Message</h2>
+              <h2 className="form-title">Tell us about your idea</h2>
               <p className="form-intro">Share a little about your idea and send it through your email app.</p>
               
               <div className="form-group">
@@ -127,6 +155,8 @@ const ContactPage = () => {
                   id="contact-name"
                   type="text"
                   name="name"
+                  autoComplete="name"
+                  maxLength={120}
                   className="form-input"
                   placeholder="John Doe"
                   value={formData.name}
@@ -141,6 +171,8 @@ const ContactPage = () => {
                   id="contact-email"
                   type="email"
                   name="email"
+                  autoComplete="email"
+                  maxLength={254}
                   className="form-input"
                   placeholder="john@example.com"
                   value={formData.email}
@@ -155,6 +187,7 @@ const ContactPage = () => {
                   id="contact-subject"
                   type="text"
                   name="subject"
+                  maxLength={180}
                   className="form-input"
                   placeholder="Project Inquiry"
                   value={formData.subject}
@@ -168,6 +201,7 @@ const ContactPage = () => {
                 <textarea
                   id="contact-message"
                   name="message"
+                  maxLength={5000}
                   className="form-textarea"
                   placeholder="Tell us about your project..."
                   rows="5"
@@ -181,7 +215,13 @@ const ContactPage = () => {
                 <span>Open email to send</span>
                 <Send className="submit-icon" size={18} />
               </button>
-              <p className="form-note">Your email app will open with the message ready. You can also reach us directly by email or WhatsApp.</p>
+              <div className="contact-draft-actions">
+                <button type="button" onClick={copyDraft}>Copy message</button>
+                <a href={contactDetails.whatsappUrl} target="_blank" rel="noopener noreferrer">Continue on WhatsApp</a>
+              </div>
+              {feedback[draftStatus] && <p className="contact-draft-feedback" role={draftStatus === 'invalid' || draftStatus === 'open-error' ? 'alert' : 'status'}>{feedback[draftStatus]}</p>}
+              {draftStatus === 'copy-error' && <div className="contact-draft-preview"><label htmlFor="contact-draft-preview">Your message, ready to copy</label><textarea id="contact-draft-preview" readOnly value={contactDraftText(formData)} onFocus={(event) => event.target.select()} rows={8} /></div>}
+              <p className="form-note">Preparing a draft does not send it automatically. You choose when to send it in your email app, or contact us directly on WhatsApp.</p>
             </form>
         </div>
       </div>

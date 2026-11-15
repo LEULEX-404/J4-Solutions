@@ -6,16 +6,23 @@ import ServicesPage from './pages/ServicesPage';
 import PortfolioPage from './pages/PortfolioPage';
 import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
+import NotFoundPage from './pages/NotFoundPage';
 import Navigation from './components/Navigation';
 import Footer from './components/Footer';
 import OrbBurst from './components/OrbBurst';
+import PageTransition from './components/PageTransition';
+import PageMetadata from './components/PageMetadata';
 
 function RouteScroll() {
   const { pathname, search, hash } = useLocation();
 
   useLayoutEffect(() => {
+    const main = document.getElementById('main-content');
+    main?.focus({ preventScroll: true });
     if (hash) {
-      const target = document.getElementById(decodeURIComponent(hash.slice(1)));
+      let targetId;
+      try { targetId = decodeURIComponent(hash.slice(1)); } catch { targetId = hash.slice(1); }
+      const target = document.getElementById(targetId);
       if (target) {
         target.scrollIntoView({ block: 'start', behavior: 'instant' });
         return;
@@ -38,19 +45,21 @@ function PageRoutes() {
         <Route path="/portfolio" element={<PortfolioPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
-        <Route path="*" element={<HomePage />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </div>
   );
 }
 
-function App() {
-  const [isLoading, setIsLoading] = useState(true);
+function AppShell() {
+  const { pathname } = useLocation();
+  const [isLoading, setIsLoading] = useState(() => pathname === '/');
 
   useEffect(() => {
+    if (!isLoading) return undefined;
     const timer = window.setTimeout(() => setIsLoading(false), 1800);
     return () => window.clearTimeout(timer);
-  }, []);
+  }, [isLoading]);
 
   useEffect(() => {
     document.documentElement.classList.toggle('is-loading', isLoading);
@@ -63,7 +72,8 @@ function App() {
   }, [isLoading]);
 
   return (
-    <Router>
+    <>
+      <PageMetadata />
       {isLoading ? (
         <div className="app-loader" role="status" aria-live="polite" aria-label="Loading J4 Solutions">
           <div className="app-loader-inner">
@@ -88,17 +98,24 @@ function App() {
           </div>
         </div>
       ) : (
-        <div className="app">
-          <Navigation />
-          <RouteScroll />
-          <main className="main-content">
-            <PageRoutes />
-          </main>
-          <Footer />
-        </div>
+        <PageTransition pathname={pathname}>
+          <div className="app">
+            <a className="skip-link" href="#main-content">Skip to content</a>
+            <Navigation />
+            <RouteScroll />
+            <main className="main-content" id="main-content" tabIndex={-1}>
+              <PageRoutes />
+            </main>
+            <Footer />
+          </div>
+        </PageTransition>
       )}
-    </Router>
+    </>
   );
+}
+
+function App() {
+  return <Router><AppShell /></Router>;
 }
 
 export default App;

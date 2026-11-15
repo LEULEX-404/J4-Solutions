@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
-import { Link } from 'react-router-dom';
-import { Facebook, Linkedin, MessageCircle, Mail, MapPin, Phone, ArrowUp } from 'lucide-react';
+import { NavLink } from 'react-router-dom';
+import { Facebook, Linkedin, MessageCircle, Mail, MapPin, Phone, ArrowUp, ArrowUpRight } from 'lucide-react';
 import { contactDetails } from '../contactDetails';
 import './Footer.css';
 
@@ -49,19 +49,20 @@ const Footer = () => {
           </div>
         </div>
 
-        <div className="footer-section quick-links">
-          <h4 className="footer-heading">Quick Links</h4>
+        <nav className="footer-section quick-links" aria-labelledby="footer-quick-links-heading">
+          <h4 className="footer-heading" id="footer-quick-links-heading">Quick Links</h4>
           <ul>
-            {quickLinks.map((item) => (
+            {quickLinks.map((item, index) => (
               <li key={item.to}>
-                <Link to={item.to} onClick={handleLinkClick}>
-                  <span className="link-node" aria-hidden="true" />
-                  {item.label}
-                </Link>
+                <NavLink className="footer-quick-link" to={item.to} end={item.to === '/'} onClick={handleLinkClick}>
+                  <span className="footer-link-number" aria-hidden="true">{String(index + 1).padStart(2, '0')}</span>
+                  <span className="footer-link-label">{item.label}</span>
+                  <span className="footer-link-arrow" aria-hidden="true"><ArrowUpRight size={15} strokeWidth={1.5} /></span>
+                </NavLink>
               </li>
             ))}
           </ul>
-        </div>
+        </nav>
 
         <div className="footer-section contact-info">
           <h4 className="footer-heading">Contact Us</h4>

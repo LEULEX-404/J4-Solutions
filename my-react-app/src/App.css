@@ -96,6 +96,9 @@ body.is-loading {
   position: relative;
   z-index: 1;
 }
+.main-content:focus { outline: none; }
+.skip-link { position: fixed; top: -80px; left: 16px; z-index: 3000; padding: 14px 20px; background: #10283f; color: #fff; text-decoration: none; }
+.skip-link:focus { top: 12px; outline: 3px solid #8bc9f1; outline-offset: 3px; }
 
 .page-entry {
   display: flex;

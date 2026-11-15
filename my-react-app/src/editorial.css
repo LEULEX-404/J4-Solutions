@@ -55,6 +55,14 @@
 .nav-brief, .navigation.is-light .nav-brief { min-height: 45px; padding-inline: 19px; border: 1px solid var(--editorial-blue); border-radius: 0; background: var(--editorial-blue); box-shadow: none; font-size: .77rem; letter-spacing: .04em; text-transform: uppercase; }
 .nav-brief:hover, .navigation.is-light .nav-brief:hover { background: #104f88; transform: none; }
 
+/* Center the supplied illustrative images within the existing media frames. */
+.culture-art img,
+.service-media img,
+.project-image img,
+.about-hero-visual img,
+.visual-card img,
+.contact-visual img { object-fit: cover; object-position: 50% 50%; }
+
 /* Home sections take KURUMBA's large type, numbered rhythm, and photography. */
 .culture-section { max-width: 1360px; padding: clamp(90px, 10vw, 150px) clamp(20px, 6vw, 88px); }
 .culture-section::before { left: clamp(20px, 6vw, 88px); right: clamp(20px, 6vw, 88px); background: var(--editorial-line); }
@@ -184,7 +192,6 @@
 .footer-section .social-icon:hover { border-color: #8bc9f1; background: #1769ad; }
 .footer-section a, .contact-info li { color: #c8d8e4; }
 .footer-section a:hover, .contact-icon { color: #8bc9f1; }
-.link-node { background: #8bc9f1; }
 .footer-bottom { border-color: #3c5970; }
 .copyright-text, .status-pill { color: #9eb6c9; }
 .back-to-top { border-color: #49647b; border-radius: 0; background: transparent; color: #fff; }
